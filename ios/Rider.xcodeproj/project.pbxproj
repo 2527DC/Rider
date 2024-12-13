@@ -45,6 +45,7 @@
 		5709B34CF0A7D63546082F79 /* Pods-Rider.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rider.release.xcconfig"; path = "Target Support Files/Pods-Rider/Pods-Rider.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-Rider-RiderTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rider-RiderTests.debug.xcconfig"; path = "Target Support Files/Pods-Rider-RiderTests/Pods-Rider-RiderTests.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Rider/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		846230452D07F71200709301 /* Rider.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Rider.entitlements; path = Rider/Rider.entitlements; sourceTree = "<group>"; };
 		8475213C2D0721700052D627 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-Rider-RiderTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rider-RiderTests.release.xcconfig"; path = "Target Support Files/Pods-Rider-RiderTests/Pods-Rider-RiderTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -90,6 +91,7 @@
 		13B07FAE1A68108700A75B9A /* Rider */ = {
 			isa = PBXGroup;
 			children = (
+				846230452D07F71200709301 /* Rider.entitlements */,
 				8475213C2D0721700052D627 /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
@@ -487,6 +489,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Rider/Rider.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Rider/Info.plist;
@@ -516,6 +519,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Rider/Rider.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = Rider/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
