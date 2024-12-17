@@ -49,7 +49,7 @@ const ScheduleCard = ({ tripDetails }) => {
 
             <View  className='flex-row mt-2 justify-between items-center'>
         <TouchableOpacity className='p-1  rounded'>
-      <Text className='text-purple-500  font-bold'>edit</Text>
+      <Text className='text-purple-500  font-bold'>Edit</Text>
           </TouchableOpacity>
           <TouchableOpacity className='p-1 bg-gray-200  rounded right-2  '>
       <Text className='text-purple-500  font-bold'>Track</Text>
