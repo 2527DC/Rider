@@ -31,11 +31,14 @@ const GoogleMapScreen = () => {
       alert('Please select a booking type.');
       return;
     }
+
+    // ken": "6IARbAVU2PF1BGOiVRXbBXJwXkY46xJW1lfDpjCfHNYGJm2jjL775A4895NI", "device_token": "jCfHNYGJm2jjL775A4895NI", "device_token": "jhbjhbj", "emailid": "Basavaraju@mltcorporate.com", "fcm_id": "jbjhb", "gender": "Male", "password": "$2y$10$MDikWLZ.78JNmpxkwhfB7.GYz7hiicTZKJGzm1MsNKXnWqcThgHJm", "phone": "IN+919632369798", "phone_code": "IN", "profile_pic": "man in the horse", "socialmedia_uid": null, "status": 1, "timestamp": "2024-12-13 18:24:17", "user_id": 181, "user_name": "Basavaraj", "user_type": "C"}}, "message": "You have Signed in Successfully!", "success": 1}
+
   
     // Prepare data for the request
     const data = {
-      api_token: "N8pBvNaYHtEGLTEYrCW9KZsqDntoNI2BiMWG1Dj6UADR9dUPjkhXHMcA24pU",
-      user_id:167,
+      api_token: "6IARbAVU2PF1BGOiVRXbBXJwXkY46xJW1lfDpjCfHNYGJm2jjL775A4895NI",
+      user_id:181,
       booking_type: selectedOption,
     };
   

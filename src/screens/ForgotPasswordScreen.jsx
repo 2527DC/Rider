@@ -2,16 +2,16 @@ import React from 'react';
 import { View, Text, TextInput, Pressable } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-const ForgotPasswordScreen = () => {
+const ForgotPasswordScreen = ({ navigation }) => {
   return (
     <SafeAreaProvider>
-      <View className='flex-1 bg-white'> {/* Changed from bg-blue to bg-blue-100 */}
+      <View className='flex-1 bg-white'>
         <View className="py-5 items-center bg-grey-300 px-5">
           <Text className="text-2xl font-bold text-blue-500 mb-5">Forgot Password</Text>
           
           <Text className="text-center text-gray-600 text-lg mb-7">
             Remember your password?
-            <Pressable>
+            <Pressable onPress={na}>
               <Text className="text-blue-500 font-semibold underline"> Login here</Text>
             </Pressable>
           </Text>
@@ -34,6 +34,6 @@ const ForgotPasswordScreen = () => {
       </View>
     </SafeAreaProvider>
   );
-};  
+};
 
 export default ForgotPasswordScreen;

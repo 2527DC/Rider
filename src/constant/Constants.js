@@ -1,6 +1,6 @@
 
 
-const BASE_URL ="https://test.mltcorporate.com/api" ; // This will load from your .env file
+const BASE_URL ="https://gitets.mltcorporate.com/api" ; // This will load from your .env file
 
 const API_ENDPOINTS = {
   REGISTER: `${BASE_URL}/user-registration`,

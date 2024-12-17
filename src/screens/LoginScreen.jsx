@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 // import { Link, useRouter } from 'expo-router';
-// import axios from 'axios'; // Import Axios
+import axios from 'axios'; // Import Axios
 import API_ENDPOINTS from '../constant/Constants';
 import { useAppContext } from '../Store/AppContext';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -12,14 +12,14 @@ const Login = ({navigation}) => {
   const [password, setPassword] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  // const {setAllUserData} = useAppContext();
+  const {setAllUserData} = useAppContext();
 
   // const { setAllUserData } = useAppContext(); // Access the setAllUserData method from the context
 
   // Function to handle login
   const handleLogin = async () => {
       // Navigate to the DrawerNavigator on successful login
-    navigation.navigate('Main');
+      navigation.navigate('Main')
       
     // try {
     //   // Prepare login data
@@ -71,7 +71,7 @@ const Login = ({navigation}) => {
     <SafeAreaProvider>
       <View className="flex-1 justify-center items-center">
         <View className="bg-white p-6 rounded-lg shadow-lg w-[350] max-w-sm">
-          <Text className="text-3xl font-semibold mb-6 text-center">Login</Text>
+          <Text className="text-3xl font-semibold mb-6 text-center">Login Via Email</Text>
 
           <View className="w-full mb-4">
             <TextInput

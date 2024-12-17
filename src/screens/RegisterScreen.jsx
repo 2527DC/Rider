@@ -157,7 +157,7 @@ const RegisterScreen = ({ navigation }) => {
 
   const handleSignUp = async () => {
     // Validation
-    if (!username || !email || !password || !selectedGender || !formattedPhone || !address) {
+    if (!username || !email || !password || !selectedGender  || !address) {
       Alert.alert('Error', 'Please fill in all fields.');
       return;
     }
@@ -265,7 +265,7 @@ const RegisterScreen = ({ navigation }) => {
             onChangeText={setPhone}
             countryPickerProps={{ withAlphaFilter: true, withFlag: true }}
             containerStyle={{ marginBottom: 16 }}
-            textContainerStyle={{ height: 50 }}
+            textContainerStyle={{ height: 80 }}
           />
 
           {/* Gender Dropdown */}
