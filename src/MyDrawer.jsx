@@ -7,10 +7,6 @@ import ProfileScreen from './screens/ProfileScreen';
 import Schedule from './screens/Schedule';
 import Reviews from './screens/Reviews';
 import Practice from './screens/Practice';
-// import ProfileScreen from './screens/ProfileScreen';
-// import BookingHistory from './screens/BookingHistory';
-// import Reviews from './screens/Reviews';
-// import Schedule from './screens/Schedule';
 
 // Create Drawer Navigator
 const Drawer = createDrawerNavigator();

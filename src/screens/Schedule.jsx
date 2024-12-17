@@ -1,15 +1,33 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { Calendar } from "react-native-calendars";
-import ShiftList from "../components/ShiftList"; // Assuming ShiftList is a separate component
+import ShiftList from "../components/ShiftList";
+import ScheduleCard from "../components/ScheduleCard";
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
+ // Import the ScheduleList component
 
 const Schedule = () => {
   // State for managing selected dates, selected button, and visibility of the shift list
   const [selectedDates, setSelectedDates] = useState({});
   const [selectedButton, setSelectedButton] = useState('login');
   const [showShiftList, setShowShiftList] = useState(false);
+  const [showScheduleList, setShowScheduleList] = useState(true); // State to toggle ScheduleList visibility
 
   const today = new Date().toISOString().split("T")[0];
+
+  const navigation = useNavigation(); // Access navigation
+
+  // Reset the state when the screen is focused
+  useFocusEffect(
+    React.useCallback(() => {
+      // Reset the state when navigating back to the screen
+      setSelectedDates({});
+      setSelectedButton('login');
+      setShowShiftList(false);
+      setShowScheduleList(true);
+     
+    }, [])
+  );
 
   // Calculate the last date of the next month
   const currentDate = new Date();
@@ -48,7 +66,6 @@ const Schedule = () => {
 
   // Handle "Back" button click to hide shift list
   const handleBackClick = () => {
-    console.log("back click is pressed");
     setShowShiftList(false); // Hide the ShiftList when "Back" is clicked
   };
 
@@ -64,25 +81,109 @@ const Schedule = () => {
     "3:00 PM",
     "4:00 PM",
   ];
+  // const [showAddSchedule, setShowAddSchedule] = useState(false); // State to toggle between components
 
+  const tripHistory = [
+    {
+      id: 1,
+      date: '2024-12-15',
+      startLocation: 'Bangalore',
+      endLocation: 'Mysore',
+      duration: '3:00',
+      type:"Login"
+    },
+    {
+      id: 2,
+      date: '2024-12-16',
+      startLocation: ' Chennaijmshvjhvwejkhvjmhs ddff ',
+      endLocation: 'Hyderabad',
+      duration: '8:00 ',
+      type:"LogOut"
+    },
+    {
+      id: 3,
+      date: '2024-12-17',
+      startLocation: 'Delhi',
+      endLocation: 'Agra',
+      duration: '21:0',
+      type:"LogOut"
+    },
+    {id: 4,
+      date: '2024-12-15',
+      startLocation: 'Bangalore',
+      endLocation: 'Mysore',
+      duration: '3:00',
+      type:"Login"
+    },
+    {
+      id: 5,
+      date: '2024-12-16',
+      startLocation: 'Chennai',
+      endLocation: 'Hyderabad',
+      duration: '8:00 ',
+      type:"LogOut"
+    },
+    {
+      id: 6,
+      date: '2024-12-17',
+      startLocation: 'Delhi',
+      endLocation: 'Agra',
+      duration: '21:0',
+      type:"LogOut"
+    },
+   
+  ];
+
+  const handleAddSchedule = () => {
+    console.log(" Add Schedule button clicked");
+    
+    setShowScheduleList(false); // Toggle the state when button is clicked
+  };
   return (
     <View className="flex-1 bg-white">
-      {/* Render ShiftList when "Next" is clicked */}
-      {showShiftList ? (
+      {/* Toggle between ScheduleList and ShiftList */}
+      {showScheduleList ? (
+       <View className="flex-1 bg-gray-100">
+   
+           <ScrollView contentContainerStyle={{ paddingBottom: 80 }} className="p-2">
+             {tripHistory.map((trip) => (
+               <ScheduleCard key={trip.id} tripDetails={trip} />
+             ))}
+           </ScrollView>
+ 
+           {/* Floating Button */}
+           <TouchableOpacity
+             className="absolute bottom-7 m-2 right-5 w-12 h-12 rounded-full bg-blue-500 justify-center items-center shadow-lg"
+             onPress={handleAddSchedule}
+           >
+             <Text className="text-white text-2xl font-bold">+</Text>
+           </TouchableOpacity>
+       
+   
+     </View>// Show the ScheduleList component when toggled
+      ) : showShiftList ? (
         <View className="flex-1">
           {/* ShiftList Component */}
           <ShiftList button={selectedButton === "login"} shifts={shifts} />
-          <View className="absolute bottom-4 left-0 right-0 mb-7 px-4 flex-row justify-between px-6">
-        <TouchableOpacity className="bg-red-500 rounded-md px-4 py-3" onPress={handleBackClick}>
-          <Text className="font-bold text-white text-center">Cancel</Text>
-        </TouchableOpacity>
-        <TouchableOpacity className="bg-blue-500 rounded-md px-4 py-3">
-          <Text className="font-bold text-white text-center">Submit</Text>
-        </TouchableOpacity>
-      </View>
+         
+          <View className="absolute bottom-16 left-4 right-4 mb-1 px-4 flex-row justify-between">
+
+  <TouchableOpacity
+    className="bg-red-500 rounded-md px-4 py-3"
+    onPress={handleBackClick} 
+  >
+    <Text className="font-bold text-white text-center">Cancel</Text>
+  </TouchableOpacity>
+  <TouchableOpacity className="bg-blue-500 rounded-md px-4 py-3" onPress={()=>console.log("submit has clicked ")
+  }>
+    <Text className="font-bold text-white text-center">Submit</Text>
+  </TouchableOpacity>
+</View>
+
         </View>
       ) : (
         <>
+        {/*   this is the ui of  Scheduling */}
           {/* Buttons for Login and Logout */}
           <View className="flex-row justify-center mt-4">
             <TouchableOpacity
@@ -121,17 +222,23 @@ const Schedule = () => {
             />
           </View>
 
-          {/* "Next" Button at the Bottom */}
-          <View className="absolute bottom-16 left-0 right-0 mb-1 px-4">
-            <TouchableOpacity className="bg-blue-500 rounded-md px-4 py-3" onPress={handleNextClick}>
-              <Text className="font-bold text-white text-center">Next</Text>
-            </TouchableOpacity>
-          </View>
+          <View className="absolute bottom-16 left-4 right-4 mb-1 px-4 flex-row justify-between">
+  {/* Cancel Button */}
+  <TouchableOpacity
+    className="bg-red-500 rounded-md px-4 py-3"
+    onPress={() => setShowScheduleList(true)} // Assuming this hides the schedule list
+  >
+    <Text className="font-bold text-white text-center">Cancel</Text>
+  </TouchableOpacity>
+
+  {/* Next Button */}
+  <TouchableOpacity className="bg-blue-500 rounded-md px-4 py-3" onPress={handleNextClick}>
+    <Text className="font-bold text-white text-center">Next</Text>
+  </TouchableOpacity>
+</View>
+
         </>
       )}
-
-      {/* Submit and Cancel Buttons at the Bottom */}
-     
     </View>
   );
 };
