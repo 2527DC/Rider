@@ -1,17 +1,16 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, Alert } from 'react-native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
-import HomeScreen from './screens/HomeScreen';
-import BookingHistory from './screens/BookingHistory';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'; // Import MaterialIcons or any other icon library
 import ProfileScreen from './screens/ProfileScreen';
 import Schedule from './screens/Schedule';
 import Reviews from './screens/Reviews';
 import Practice from './screens/Practice';
+import TripHistory from './screens/TripHistory';
+import RAC from './screens/RAC';
 
-// Create Drawer Navigator
 const Drawer = createDrawerNavigator();
 
-// Custom Drawer Content
 const CustomDrawerContent = (props) => {
   const handleLogout = () => {
     Alert.alert(
@@ -23,10 +22,9 @@ const CustomDrawerContent = (props) => {
           text: "Logout", 
           style: "destructive",
           onPress: () => {
-            // Perform logout actions here (e.g., clearing tokens, navigating to login)   
             props.navigation.reset({
               index: 0,
-              routes: [{ name: 'Login' }], // Replace 'Login' with your actual login screen name
+              routes: [{ name: 'Login' }],
             });
           }
         }
@@ -37,7 +35,6 @@ const CustomDrawerContent = (props) => {
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>
       <DrawerContentScrollView {...props}>
-        {/* Custom Header */}
         <View style={{ backgroundColor: '#3b82f6', padding: 20, alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#ccc', marginBottom: 10 }}>
           <Image
             source={require('./assets/image/images.jpg')}
@@ -46,11 +43,7 @@ const CustomDrawerContent = (props) => {
           <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'white' }}>John Doe</Text>
           <Text style={{ fontSize: 14, color: '#f0f0f0' }}>johndoe@example.com</Text>
         </View>
-
-        {/* Default Drawer Items */}
         <DrawerItemList {...props} />
-
-        {/* Logout Button */}
         <View style={{ marginTop: 20, paddingHorizontal: 30 }}>
           <TouchableOpacity
             style={{
@@ -73,37 +66,91 @@ const CustomDrawerContent = (props) => {
   );
 };
 
-// Drawer Navigator
 const MyDrawer = () => {
   return (
     <Drawer.Navigator
-      initialRouteName="Home"
+      initialRouteName="Schedule"
       drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={{
-        headerShown: true, // Hide header globally for all screens
+        headerShown: true,
+        drawerStyle: {
+          width: 240, // Adjust the width as per your requirement
+          backgroundColor: 'white', // Optional: Change background color
+        },
         drawerItemStyle: {
           borderWidth: 1,
           borderColor: 'white',
           marginVertical: 5,
           borderRadius: 16,
+          width: '90%', // Adjust item width within the drawer
+          alignSelf: 'center',
         },
-        drawerActiveTintColor: 'white',
+        drawerActiveTintColor: 'black',
         drawerInactiveTintColor: 'black',
-        drawerActiveBackgroundColor: '#60a5fa',
+        drawerActiveBackgroundColor: 'white',
         drawerLabelStyle: {
           fontSize: 16,
           fontWeight: 'bold',
         },
       }}
     >
-      <Drawer.Screen name="Home" component={HomeScreen} />
-      <Drawer.Screen name="Profile" component={ProfileScreen} />
-      <Drawer.Screen name="BookingHistory" component={BookingHistory} />
-      <Drawer.Screen name="Schedule" component={Schedule} />
-      <Drawer.Screen name="Reviews" component={Reviews} />
-      <Drawer.Screen name="Practice" component={Practice} />
+      <Drawer.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          drawerIcon: ({ color, size }) => (
+            <MaterialIcons name="person" color={color} size={size} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Schedule"
+        component={Schedule}
+        options={{
+          drawerIcon: ({ color, size }) => (
+            <MaterialIcons name="schedule" color={color} size={size} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Reviews"
+        component={Reviews}
+        options={{
+          drawerIcon: ({ color, size }) => (
+            <MaterialIcons name="rate-review" color={color} size={size} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Practice"
+        component={Practice}
+        options={{
+          drawerIcon: ({ color, size }) => (
+            <MaterialIcons name="fitness-center" color={color} size={size} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="TripHistory"
+        component={TripHistory}
+        options={{
+          drawerIcon: ({ color, size }) => (
+            <MaterialIcons name="history" color={color} size={size} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="RAC"
+        component={RAC}
+        options={{
+          drawerIcon: ({ color, size }) => (
+            <MaterialIcons name="directions-car-filled" color={color} size={size} />
+          ),
+        }}
+      />
     </Drawer.Navigator>
   );
 };
+
 
 export default MyDrawer;

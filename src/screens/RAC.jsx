@@ -2,7 +2,7 @@ import React from 'react';
 import GoogleMapScreen from './GoogleMapScreen';
 
 
-const HomeScreen = () => {
+const RAC = () => {
   
   return (
     <GoogleMapScreen></GoogleMapScreen>
@@ -10,4 +10,4 @@ const HomeScreen = () => {
 };
 
 
-export default HomeScreen;
+export default RAC;
