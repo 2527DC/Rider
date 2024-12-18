@@ -5,6 +5,7 @@ import axios from 'axios'; // Import Axios
 import API_ENDPOINTS from '../constant/Constants';
 import { useAppContext } from '../Store/AppContext';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 
 const Login = ({navigation}) => {
@@ -109,8 +110,11 @@ const Login = ({navigation}) => {
 
           <Text className="text-sm">
             Don't have an account?{' '}
-            <Text className="text-blue-500 text-lg" onPress={() => navigation.navigate('Register')}>Register</Text>
+           <Text className="text-blue-500 text-lg" onPress={() => navigation.navigate('Register')}>Register</Text>
+           
           </Text>
+
+          <Icon name="rocket" size={30} color="#900" />;
         </View>
       </View>
     </SafeAreaProvider>
