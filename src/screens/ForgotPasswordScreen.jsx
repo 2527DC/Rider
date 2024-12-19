@@ -11,7 +11,8 @@ const ForgotPasswordScreen = ({ navigation }) => {
           
           <Text className="text-center text-gray-600 text-lg mb-7">
             Remember your password?
-            <Pressable onPress={na}>
+            <Pressable onPress={()=>console.log(' i am mugamboo')
+            }>
               <Text className="text-blue-500 font-semibold underline"> Login here</Text>
             </Pressable>
           </Text>

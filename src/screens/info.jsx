@@ -1,70 +1,65 @@
-import React, { useEffect } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import Filter from 'react-native-vector-icons/MaterialCommunityIcons'; // Import icon library
+import React from "react";
+import { View, Text, StyleSheet, Image, SafeAreaView } from "react-native";
 
-const TripHistory = () => {
-  const navigation = useNavigation();
-
-
-  const handleFilterButton=()=>{
-
-    console.log("Filter butto pressed ");
-    
-  }
-  useEffect(() => {
-    // Modify the header when the component is mounted
-    navigation.setOptions({
-      title: 'Trip History', // Custom title for the header
-      headerStyle: {
-        backgroundColor: 'white', // Change header background color
-      },
-      headerTintColor: 'black', // Change text color
-      headerTitleStyle: {
-        fontWeight: 'bold', // Make the title bold
-      },
-      headerRight: () => (
-        <TouchableOpacity onPress={handleFilterButton}>
-          <Filter name="filter-menu-outline" size={27} color="black" style={{ marginRight: 10 }} />
-        </TouchableOpacity>
-      ),
-    });
-  }, [navigation]);
-
-  const filterType=["TripStatus","Trip Rating", "Vehicle Type"]
-  const toshow ={
-    tripStatusOptions : ['All', 'Complete', 'No Show', 'Cancelled'],
-    tripRatingOptions :['All', 'No Rating', '1 Star', '2 Star', '3 Star', '4 Star', '5 Star'],
-    vehicleTypeOptions :['All', 'Cab', 'Shuttle']
-  }
-
-
+const LoginScreen = () => {
   return (
-    <View className='flex-1 w-full '>
-      <View className='flex-row  justify-between p-2 bg-blue-300 '>
-        <View>
-        <TouchableOpacity className='p-1   m-1 bg-red-300'>
-       {filterType.map((data,i)=> <Text className='m-1 bg-green-300' key={i}>{data}</Text>)}
-        </TouchableOpacity>
-        </View>
-       
-       <View>
-        <View>
-            { toshow.map((data,i)=><>
-            
+    <SafeAreaView style={styles.container}>
+      {/* Top Blue Wave */}
+      <View style={styles.topWave} />
 
-            </>)}
-        </View>
-       </View>
-      </View>
+      {/* Login Text */}
+      <Text style={styles.loginText}>Login via Email</Text>
 
-      <View className='flex-1'> 
-        <View>
+      {/* Logo */}
+      <Image
+        source={{ uri: "https://your-logo-url.com/logo.png" }} // Replace with your logo URL or local image path
+        style={styles.logo}
+        resizeMode="contain"
+      />
 
-        </View>
-      </View>
-    </View>
+      {/* Bottom Blue Triangle */}
+      <View style={styles.bottomTriangle} />
+    </SafeAreaView>
   );
 };
 
-export default TripHistory;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  topWave: {
+    position: "absolute",
+    top: 0,
+    width: "100%",
+    height: 150,
+    backgroundColor: "#4285F4", // Adjust the color
+    borderBottomLeftRadius: 100,
+    borderBottomRightRadius: 100,
+  },
+  loginText: {
+    fontSize: 20,
+    color: "#000",
+    marginTop: 180,
+    fontWeight: "bold",
+  },
+  logo: {
+    width: 100,
+    height: 100,
+    marginVertical: 20,
+  },
+  bottomTriangle: {
+    position: "absolute",
+    bottom: 0,
+    width: 0,
+    height: 0,
+    borderLeftWidth: 150,
+    borderRightWidth: 150,
+    borderBottomWidth: 200,
+    borderLeftColor: "transparent",
+    borderRightColor: "transparent",
+    borderBottomColor: "#4285F4",
+  },
+})

@@ -69,7 +69,7 @@ const CustomDrawerContent = (props) => {
 const MyDrawer = () => {
   return (
     <Drawer.Navigator
-      initialRouteName="Schedule"
+      initialRouteName="Practice"
       drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={{
         headerShown: true,

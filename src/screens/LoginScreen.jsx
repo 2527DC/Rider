@@ -111,7 +111,7 @@ const Login = ({navigation}) => {
           <Text className="text-sm">
             Don't have an account?{' '}
            <Text className="text-blue-500 text-lg" onPress={() => navigation.navigate('Register')}>Register</Text>
-           <Icon name="rocket" size={30} color="#900" />;
+          
           </Text>
 
         
