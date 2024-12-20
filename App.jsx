@@ -11,6 +11,10 @@ import messaging from '@react-native-firebase/messaging';
 import firebase from '@react-native-firebase/app';
 import database from '@react-native-firebase/database';
 import RegisterScreen from './src/screens/RegisterScreen';
+import LoginOption from './src/screens/LoginOption';
+import EmailLoginScreen from './src/screens/EmailLoginScreen';
+import OtpVerification from './src/components/OtpVerification';
+import PhoneLogin from './src/screens/PhoneLogin';
 
 const Stack = createNativeStackNavigator();
 
@@ -90,9 +94,11 @@ function App() {
       <AppProvider>
         <NavigationContainer>
           <Stack.Navigator>
-            <Stack.Screen name="Login" component={Login} />
-            <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
-            <Stack.Screen name="Register" component={RegisterScreen} />
+            <Stack.Screen name="Login" component={LoginOption} />
+            <Stack.Screen name="EmailLogin" component={EmailLoginScreen} />
+            <Stack.Screen name="otp" component={OtpVerification} />
+            <Stack.Screen name="PhoneLogin" component={PhoneLogin} />
+          
             <Stack.Screen
               name="Main"
               component={MyDrawer}

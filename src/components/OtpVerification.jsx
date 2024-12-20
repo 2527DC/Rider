@@ -1,7 +1,10 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useRef, useState } from 'react';
 import { View, TextInput, Text, Alert, TouchableOpacity } from 'react-native';
 
-const OtpVerification = () => {
+const OtpVerification = ({navigation}) => {
+
+
   const [otp, setOtp] = useState(['', '', '', '']); // State for OTP input (4 boxes)
   const inputRefs = useRef([]); // Array to hold refs for the input boxes
 
@@ -28,17 +31,22 @@ const OtpVerification = () => {
   };
 
   const handleSubmit = () => {
-    const enteredOtp = otp.join(''); // Join the OTP array into a string
-    if (enteredOtp.length < 4) {
-      Alert.alert('Error', 'Please enter all 4 digits of the OTP');
-      return;
-    }
-    console.log('Entered OTP:', enteredOtp);
-    Alert.alert('OTP Submitted', `Your OTP: ${enteredOtp}`);
+    navigation.replace("Main");
 
-    // Clear the fields
-    setOtp(['', '', '', '']);
-    inputRefs.current[0]?.focus(); // Focus on the first input after clearing
+      /* 1. Navigate to the Details route with params */
+    
+
+    // const enteredOtp = otp.join(''); // Join the OTP array into a string
+    // if (enteredOtp.length < 4) {
+    //   Alert.alert('Error', 'Please enter all 4 digits of the OTP');
+    //   return;
+    // }
+    // console.log('Entered OTP:', enteredOtp);
+    // // Alert.alert('OTP Submitted', `Your OTP: ${enteredOtp}`);
+   
+    // // Clear the fields
+    // setOtp(['', '', '', '']);
+    // inputRefs.current[0]?.focus(); // Focus on the first input after clearing
   };
 
   return (

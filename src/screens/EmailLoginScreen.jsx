@@ -3,7 +3,8 @@ import React from 'react'
 // import { View, Image, Text, TextInput, TouchableOpacity } from "react-native";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { View, Text, StyleSheet, Image, SafeAreaView, TextInput, TouchableOpacity } from "react-native";
-const EmailLoginScreen = () => {
+import OtpVerification from '../components/OtpVerification';
+const EmailLoginScreen = ({navigation}) => {
   return (
     <View className="flex-1 bg-blue-100">
       {/* Image at the top */}
@@ -48,11 +49,12 @@ const EmailLoginScreen = () => {
             keyboardType="email-address"
             autoCapitalize="none"
           />
-          <TouchableOpacity className="p-1" onPress={()=>console.log(" email  submit button pressed ")}>
+          <TouchableOpacity className="p-1" onPress={()=>navigation.navigate("otp")}>
             <MaterialIcons name="arrow-forward" size={30} color="black" />
           </TouchableOpacity>
         </View>
       </View>
+      
     </View>
   )
 }

@@ -1,14 +1,12 @@
-import React from "react";
-import { Text, View } from "react-native";
-import OtpVerification from "../components/OtpVerification";
-import LoginOption from "./LoginOption";
-import EmailLoginScreen from "./EmailLoginScreen";
-
+import { View, Text } from 'react-native'
+import React from 'react'
 
 const Practice = () => {
   return (
-<OtpVerification></OtpVerification>
-  );
-};
+    <View>
+      <Text>Practice</Text>
+    </View>
+  )
+}
 
-export default Practice;
+export default Practice

@@ -20,52 +20,52 @@ const Login = ({navigation}) => {
   // Function to handle login
   const handleLogin = async () => {
       // Navigate to the DrawerNavigator on successful login
-      navigation.navigate('Main')
+      navigation.replace("Main");
       
-    // try {
-    //   // Prepare login data
-    //   const loginData = {
-    //     username: email,
-    //     password: password,
-    //   };
+    try {
+      // Prepare login data
+      const loginData = {
+        username: email,
+        password: password,
+      };
 
-    //   // Send POST request to login endpoint
-    //   const response = await axios.post(API_ENDPOINTS.LOGIN, loginData, {
-    //     headers: {
-    //       'Content-Type': 'application/json', // Ensures the data is sent as JSON
-    //     },
-    //   });
+      // Send POST request to login endpoint
+      const response = await axios.post(API_ENDPOINTS.LOGIN, loginData, {
+        headers: {
+          'Content-Type': 'application/json', // Ensures the data is sent as JSON
+        },
+      });
 
-    //   // Handle the successful login response
-    //   if (response.data.success) {
-    //     console.log('Login successful:', response.data);
+      // Handle the successful login response
+      if (response.data.success) {
+        console.log('Login successful:', response.data);
 
-    //     // Extract user information from the response
-    //     const userInfo = response.data.data.userinfo;
+        // Extract user information from the response
+        const userInfo = response.data.data.userinfo;
 
-    //     // Save the user data in the context
-    //     setAllUserData({
-    //       api_token: userInfo.api_token,
-    //       emailid: userInfo.emailid,
-    //       user_name: userInfo.user_name,
-    //       phone: userInfo.phone,
-    //       phone_code: userInfo.phone_code,
-    //       gender: userInfo.gender,
-    //       address: userInfo.address,
-    //       user_id: userInfo.user_id,
-    //     });
+        // Save the user data in the context
+        setAllUserData({
+          api_token: userInfo.api_token,
+          emailid: userInfo.emailid,
+          user_name: userInfo.user_name,
+          phone: userInfo.phone,
+          phone_code: userInfo.phone_code,
+          gender: userInfo.gender,
+          address: userInfo.address,
+          user_id: userInfo.user_id,
+        });
 
-    //     // Navigate to the DrawerNavigator on successful login
-    // navigation.navigate('Main')
+        // Navigate to the DrawerNavigator on successful login
+    navigation.navigate('Main')
         
-    //   } else {
-    //     // Show error message if login failed
-    //     Alert.alert('Login Failed', response.data.message || 'An error occurred');
-    //   }
-    // } catch (error) {
-    //   console.error('Login error:', error);
-    //   Alert.alert('Login Failed', 'An error occurred while logging in.');
-    // }
+      } else {
+        // Show error message if login failed
+        Alert.alert('Login Failed', response.data.message || 'An error occurred');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      Alert.alert('Login Failed', 'An error occurred while logging in.');
+    }
   };
 
   return (

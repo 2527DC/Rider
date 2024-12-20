@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, Image, TouchableOpacity, Alert } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, Image, TouchableOpacity, Alert, BackHandler } from 'react-native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'; // Import MaterialIcons or any other icon library
 import ProfileScreen from './screens/ProfileScreen';
@@ -12,6 +12,19 @@ import RAC from './screens/RAC';
 const Drawer = createDrawerNavigator();
 
 const CustomDrawerContent = (props) => {
+
+  useEffect(() => {
+    const backAction = () => {
+      // Return true to prevent the back action
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+
+    // Cleanup the event listener when the component is unmounted
+    return () => backHandler.remove();
+  }, []);
+
   const handleLogout = () => {
     Alert.alert(
       "Logout",
