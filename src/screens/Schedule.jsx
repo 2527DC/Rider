@@ -59,15 +59,12 @@ const Schedule = () => {
         console.log(bookingId);
         
         const newBooking = {
-         
+          id:bookingId,
           date: Object.keys(selectedDates)[0], // Use the first selected date
           type: selectedButton,
           otp: "",
           driverName: "",
           vehicleNo: "",
-          lat: 0,
-          long: 0,
-          id:bookingId,
           startLocation: "Chennai",
           endLocation: "Hyderabad",
           shift: shiftValue, // Default shift if not selected

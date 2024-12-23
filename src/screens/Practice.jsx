@@ -14,11 +14,10 @@ const Practice = () => {
       const nextBookingId = `B1`;
       const newBooking = {
         type: "logout",
+        "id":"B1",
         otp: "",
         driverName: "",
         vehicleNo: "",
-        lat: 0,
-        long: 0,
         date: "2024-12-25",
         startLocation: "bangalore",
         endLocation: "delhi",
@@ -78,6 +77,7 @@ const Practice = () => {
   };
 
   return (
+
     <View className="flex-1 items-center mt-5">
       <TouchableOpacity className="p-1 bg-red-300 m-4" onPress={createBooking}>
         <Text className="text-xl font-bold">CREATE BOOKING</Text>

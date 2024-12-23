@@ -13,6 +13,7 @@ import LoginOption from './src/screens/LoginOption';
 import EmailLoginScreen from './src/screens/EmailLoginScreen';
 import OtpVerification from './src/components/OtpVerification';
 import PhoneLogin from './src/screens/PhoneLogin';
+import TrackingDriver from './src/components/TrackingDriver';
 
 const Stack = createNativeStackNavigator();
 
@@ -96,7 +97,7 @@ function App() {
             <Stack.Screen name="EmailLogin" component={EmailLoginScreen} />
             <Stack.Screen name="otp" component={OtpVerification} />
             <Stack.Screen name="PhoneLogin" component={PhoneLogin} />
-          
+            <Stack.Screen name="TrackingDriver" component={TrackingDriver} />
             <Stack.Screen
               name="Main"
               component={MyDrawer}

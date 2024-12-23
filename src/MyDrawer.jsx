@@ -1,27 +1,28 @@
 import React, { useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, Alert, BackHandler } from 'react-native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons'; // Import MaterialIcons or any other icon library
+import { createStackNavigator } from '@react-navigation/stack'; // Import Stack Navigator
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import ProfileScreen from './screens/ProfileScreen';
 import Schedule from './screens/Schedule';
 import Reviews from './screens/Reviews';
 import Practice from './screens/Practice';
 import TripHistory from './screens/TripHistory';
 import RAC from './screens/RAC';
+import TrackingDriver from './components/TrackingDriver';
+
 
 const Drawer = createDrawerNavigator();
+const Stack = createStackNavigator(); // Create the Stack Navigator
 
 const CustomDrawerContent = (props) => {
-
   useEffect(() => {
     const backAction = () => {
-      // Return true to prevent the back action
       return true;
     };
 
     const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
 
-    // Cleanup the event listener when the component is unmounted
     return () => backHandler.remove();
   }, []);
 
@@ -87,15 +88,15 @@ const MyDrawer = () => {
       screenOptions={{
         headerShown: true,
         drawerStyle: {
-          width: 240, // Adjust the width as per your requirement
-          backgroundColor: 'white', // Optional: Change background color
+          width: 240,
+          backgroundColor: 'white',
         },
         drawerItemStyle: {
           borderWidth: 1,
           borderColor: 'white',
           marginVertical: 5,
           borderRadius: 16,
-          width: '90%', // Adjust item width within the drawer
+          width: '90%',
           alignSelf: 'center',
         },
         drawerActiveTintColor: 'black',
@@ -165,5 +166,13 @@ const MyDrawer = () => {
   );
 };
 
+const MyStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="MyDrawer" component={MyDrawer} options={{ headerShown: false }} />
+      <Stack.Screen name="TrackingDriver"     options={{ headerShown: false }} component={TrackingDriver} />
+    </Stack.Navigator>
+  );
+};
 
-export default MyDrawer;
+export default MyStack;
