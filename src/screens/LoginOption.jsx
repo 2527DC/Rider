@@ -4,7 +4,7 @@ import Svg, {  Rect } from 'react-native-svg';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const LoginOption = ({ navigation }) => {
-  console.log(navigation); 
+ 
   return (
     <SafeAreaView className="flex-1 bg-white ">
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -55,7 +55,7 @@ const LoginOption = ({ navigation }) => {
           </TouchableOpacity>
 
           {/* Login Via Phone Button */}
-          <TouchableOpacity onPress={()=>  navigation.navigate('EmailLogin')} className="border-2 border-blue-500 bg-blue-100 rounded-xl flex-row items-center px-6 py-2">
+          <TouchableOpacity onPress={()=>  navigation.navigate('Main')} className="border-2 border-blue-500 bg-blue-100 rounded-xl flex-row items-center px-6 py-2">
             <Text className="text-2xl text-blue-500 font-semibold mr-2">Login Via Email</Text>
             <MaterialIcons name="mail" size={30} color="blue" />
           </TouchableOpacity>

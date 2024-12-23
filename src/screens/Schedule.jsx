@@ -4,19 +4,14 @@ import { Calendar } from "react-native-calendars";
 import ShiftList from "../components/ShiftList";
 import ScheduleCard from "../components/ScheduleCard";
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { useAppContext } from "../Store/AppContext";
 
 const Schedule = () => {
   const [selectedDates, setSelectedDates] = useState({});
   const [selectedButton, setSelectedButton] = useState('login');
   const [showShiftList, setShowShiftList] = useState(false);
   const [showScheduleList, setShowScheduleList] = useState(true);
-  const [shifts, setShifts] = useState(["3:00 AM", "4:00 AM", "5:00 AM", "6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM", "3:00 PM", "4:00 PM"]);
-  const [tripHistory, setTripHistory] = useState([
-    { id: 1, date: '2024-12-15', startLocation: 'Bangalore hhgqgfcgqfcgfhgtfcfcgcgcgfcg', endLocation: 'Mysore', duration: '3:00', type: "Login", status: "cancelled" },
-    { id: 2, date: '2024-12-16', startLocation: 'Chennai', endLocation: 'Hyderabad', duration: '8:00', type: "LogOut", status: "cancelled" },
-    { id: 3, date: '2024-12-15', startLocation: 'Bangalore', endLocation: 'Mysore', duration: '3:00', type: "Login", status: "Scheduled" }
-  ]);
-
+  const {shifts, setShifts,tripHistory, setTripHistory} = useAppContext()
   const today = new Date().toISOString().split("T")[0];
   const navigation = useNavigation();
 

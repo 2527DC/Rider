@@ -1,7 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { Platform, PermissionsAndroid, Alert, BackHandler } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
-import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions'; // Import react-native-permissions
 
 // Create Context
 const AppContext = createContext();
@@ -24,22 +22,19 @@ export const AppProvider = ({ children }) => {
     address: '',
     user_id: '',
   });
+  const [shifts, setShifts] = useState(["3:00 AM", "4:00 AM", "5:00 AM", "6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM", "3:00 PM", "4:00 PM"]);
+  const [tripHistory, setTripHistory] = useState([
+    { id: 1, date: '2024-12-15', startLocation: 'Bangalore hhgqgfcgqfcgfhgtfcfcgcgcgfcg', endLocation: 'Mysore', duration: '3:00', type: "Login", status: "cancelled" },
+    { id: 2, date: '2024-12-16', startLocation: 'Chennai', endLocation: 'Hyderabad', duration: '8:00', type: "LogOut", status: "cancelled" },
+    { id: 3, date: '2024-12-15', startLocation: 'Bangalore', endLocation: 'Mysore', duration: '3:00', type: "Login", status: "Scheduled" }
+  ]);
 
   
   
 
-const configureGeolocation = () => {
-  Geolocation.setRNConfiguration({
-    skipPermissionRequests: false, // App will request permissions automatically
-    authorizationLevel: 'whenInUse', // Location is accessed only when app is in use
-    enableBackgroundLocationUpdates: true, // No updates when app is in the background
-    locationProvider: 'gps', // Automatically selects the provider (Android)
-  });
-};
-  
 
 useEffect(() => {
-  configureGeolocation()
+
   
 }, []);
 
@@ -88,7 +83,8 @@ useEffect(() => {
         updateUserData,
         setAllUserData,
         getUserData,
-        clearUserData,
+        clearUserData,shifts, setShifts,
+        tripHistory, setTripHistory
       }}
     >
       {children}

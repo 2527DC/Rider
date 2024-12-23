@@ -1,12 +1,14 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+// Practice.js
+import React from 'react';
+import { View } from 'react-native';
+import ScreenWithSlideUpView from '../components/ScreenWithSlideUpView';  // Correct path to the component
 
 const Practice = () => {
   return (
-    <View>
-      <Text>Practice</Text>
+    <View style={{ flex: 1 }}>
+      <ScreenWithSlideUpView />
     </View>
-  )
-}
+  );
+};
 
-export default Practice
+export default Practice;
