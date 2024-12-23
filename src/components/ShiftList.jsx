@@ -1,11 +1,19 @@
 import React, { useState } from 'react';
 import { Text, View, ScrollView, TouchableOpacity } from 'react-native';
+import { useAppContext } from '../Store/AppContext';
 
 const ShiftList = ({ button, shifts }) => {
   const [selectedShift, setSelectedShift] = useState(null); // Track selected shift
 
-  const handleShiftSelect = (index) => {
+
+   const{ setShiftvalue}=useAppContext();
+  const handleShiftSelect = (index,shift) => {
+
     setSelectedShift(index); // Update the selected shift when a shift is clicked
+   setShiftvalue(shift)
+    console.log(shift);
+    
+    
   };
 
   return (
@@ -19,7 +27,7 @@ const ShiftList = ({ button, shifts }) => {
           {shifts.map((shift, index) => (
             <TouchableOpacity
               key={index}
-              onPress={() => handleShiftSelect(index)} // Handle button press to select shift
+              onPress={() => handleShiftSelect(index, shift)} // Handle button press to select shift
             >
               <View
                 style={{

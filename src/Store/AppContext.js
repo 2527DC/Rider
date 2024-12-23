@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import Geolocation from '@react-native-community/geolocation';
+import database from '@react-native-firebase/database'; // Import Firebase Realtime Database
 
 // Create Context
 const AppContext = createContext();
@@ -22,48 +22,96 @@ export const AppProvider = ({ children }) => {
     address: '',
     user_id: '',
   });
-  const [shifts, setShifts] = useState(["3:00 AM", "4:00 AM", "5:00 AM", "6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM", "3:00 PM", "4:00 PM"]);
-  const [tripHistory, setTripHistory] = useState([
-    { id: 1, date: '2024-12-15', startLocation: 'Bangalore hhgqgfcgqfcgfhgtfcfcgcgcgfcg', endLocation: 'Mysore', duration: '3:00', type: "Login", status: "cancelled" },
-    { id: 2, date: '2024-12-16', startLocation: 'Chennai', endLocation: 'Hyderabad', duration: '8:00', type: "LogOut", status: "cancelled" },
-    { id: 3, date: '2024-12-15', startLocation: 'Bangalore', endLocation: 'Mysore', duration: '3:00', type: "Login", status: "Scheduled" }
-  ]);
 
-  
-  
+  const [shifts, setShifts] = useState([]);
+  const [tripHistory, setTripHistory] = useState([]); // Trip history state
+   const[shiftValue,setShiftvalue]=useState("")
+  // Fetch shifts data from Firebase Realtime Database
+  useEffect(() => {
+    console.log('Fetching shifts data from Firebase...');
 
+    const shiftsRef = database().ref('/shift/scheduleShift');
 
-useEffect(() => {
+    const onValueChange = shiftsRef.on('value', snapshot => {
+      const data = snapshot.val();
+      if (data) {
+        console.log('Shifts data fetched:', data);
+        setShifts(data);
+      } else {
+        console.log('No shifts data found. Setting empty array.');
+        setShifts([]); // Set an empty array if no data exists
+      }
+    });
 
-  
-}, []);
+    // Cleanup the listener when the component is unmounted
+    return () => {
+      console.log('Cleaning up shifts listener...');
+      shiftsRef.off('value', onValueChange);
+    };
+  }, []);
 
-  //  method for gettibg the current location 
-    
+  // Method to get trip history data from Firebase
+  useEffect(() => {
+    console.log('Fetching trip history data from Firebase...');
 
-  // Request location permission when the app is loaded
-  
+    const tripHistoryRef = database().ref('/schedules/EMPLOYEE_001/bookings/id');
+
+    const onValueChange = tripHistoryRef.on('value', snapshot => {
+      const data = snapshot.val();
+      console.log(data + " man in the action");
+      
+      if (data) {
+        console.log('Fetched trip history data:', data);
+
+        const tripHistoryArray = Object.entries(data).map(([key, value]) => ({
+          id: key,
+          ...value, // Add the rest of the booking data
+        }));
+
+        console.log('Formatted trip history:', tripHistoryArray);
+        setTripHistory(tripHistoryArray); // Set the trip history state
+      } else {
+        console.log('No trip history data found. Setting empty array.');
+        setTripHistory([]); // If no data exists, set an empty array
+      }
+    });
+
+    // Cleanup the listener when the component is unmounted
+    return () => {
+      console.log('Cleaning up trip history listener...');
+      tripHistoryRef.off('value', onValueChange);
+    };
+  }, []);
 
   // Method to update specific user data field
   const updateUserData = (key, value) => {
-    setUserData(prev => ({
-      ...prev,
-      [key]: value, // Update only the specified key
-    }));
+    console.log(`Updating user data: ${key} = ${value}`);
+    setUserData(prev => {
+      const updatedData = {
+        ...prev,
+        [key]: value, // Update only the specified key
+      };
+      console.log('Updated user data:', updatedData);
+      return updatedData;
+    });
   };
 
   // Method to set all user data at once
   const setAllUserData = data => {
+    console.log('Setting all user data:', data);
     setUserData(data);
   };
 
   // Method to get a specific field value from user data
   const getUserData = key => {
-    return userData[key] || null; // Return the value or null if not found
+    const value = userData[key] || null; // Return the value or null if not found
+    console.log(`Getting user data for key "${key}":`, value);
+    return value;
   };
 
   // Method to clear user data
   const clearUserData = () => {
+    console.log('Clearing user data...');
     setUserData({
       api_token: '',
       emailid: '',
@@ -83,8 +131,13 @@ useEffect(() => {
         updateUserData,
         setAllUserData,
         getUserData,
-        clearUserData,shifts, setShifts,
-        tripHistory, setTripHistory
+        clearUserData,
+        shifts,
+        setShifts,
+        tripHistory,
+        setTripHistory,
+        setShiftvalue,
+        shiftValue
       }}
     >
       {children}
