@@ -81,7 +81,6 @@ const Schedule = () => {
         console.log("Booking added to Firebase:", newBooking);
   
         // Update local state
-        setTripHistory((prevHistory) => [...prevHistory, newBooking]);
         setShowScheduleList(true);
         setShowShiftList(false);
       } catch (error) {

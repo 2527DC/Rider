@@ -49,10 +49,10 @@ const ScheduleCard = ({ tripDetails }) => {
   const toggleCard = () => setExpanded(!expanded);
 
   const handleTracking=(vehicleNo)=>{
-    navigation.navigate('TrackingDriver', { vehicleNo });
-    console.log( " handle tracking button has been pressed ");
 
-    
+    if (tripDetails.vehicleNo!=="") {
+      navigation.navigate('TrackingDriver', { vehicleNo });
+    }  
   }
 
   const handleCancelBooking = (id) => {

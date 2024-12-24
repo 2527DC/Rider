@@ -61,7 +61,7 @@ const TrackingDriver = ({ route }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tracking Driver</Text>
+     
       <MapView
         style={styles.map}
         region={region}
