@@ -1,105 +1,177 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
-import database from '@react-native-firebase/database';
-import  MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import React, { useState, useRef } from 'react';
+import { View, Text, TouchableOpacity, Platform, Alert, Linking } from 'react-native';
+import MapView from 'react-native-maps';
+import Geolocation from '@react-native-community/geolocation';
+import { request, PERMISSIONS, check, openSettings } from 'react-native-permissions';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-const TrackingDriver = ({ route }) => {
-  // const { vehicleNo } = route.params; // Receive vehicleNo as a prop
-
-  // console.log(vehicleNo + " in the tracking screen ");
-
-  const [location, setLocation] = useState({
-    lat: 13.1123, // Default latitude
-    long: 77.5249, // Default longitude
-  });
+const TrackingDriver = () => {
   const [region, setRegion] = useState({
-    latitude: 13.1123, 
-    longitude: 77.5249,
-    latitudeDelta: 0.01,
-    longitudeDelta: 0.01,
+    latitude: 20.5937,
+    longitude: 78.9629,
+    latitudeDelta: 10,
+    longitudeDelta: 10,
   });
+  const [showUserLocation, setShowUserLocation] = useState(false); // State to toggle visibility
+  const mapRef = useRef(null);
 
-  // useEffect(() => {
-  //   // Fetch vehicle location from Realtime Database
-  //   const vehicleRef = database().ref(`/Driverlocations/${vehicleNo}`);
-
-  //   const unsubscribe = vehicleRef.on('value', (snapshot) => {
-  //     if (snapshot.exists()) {
-  //       const { lat, long } = snapshot.val();
-  //       setLocation({ lat, long });
-  //       setRegion(prevRegion => ({
-  //         ...prevRegion,
-  //         latitude: lat,
-  //         longitude: long,
-  //       }));
-  //       console.log('Vehicle lat and long .' + lat, long);
-  //     } else {
-  //       console.error('Vehicle not found in database.');
-  //     }
-  //   });
-
-  //   // Cleanup listener when component unmounts
-  //   return () => vehicleRef.off('value', unsubscribe);
-  // }, [vehicleNo]);
-
-  // Zoom in and zoom out functions
-  const zoomIn = () => {
-    setRegion((prevRegion) => ({
-      ...prevRegion,
-      latitudeDelta: prevRegion.latitudeDelta * 0.8, // Decrease latitudeDelta to zoom in
-      longitudeDelta: prevRegion.longitudeDelta * 0.8, // Decrease longitudeDelta to zoom in
-    }));
+  // Function to request location permission for iOS and Android
+  const requestLocationPermission = async () => {
+    if (Platform.OS === 'android') {
+      try {
+        const granted = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
+        if (granted === 'granted') {
+          console.log('Location permission granted');
+          toggleUserLocation(); // Toggle the visibility
+        } else {
+          console.log('Location permission denied');
+          Alert.alert(
+            'Location Permission Required',
+            'This app requires access to your location. Please enable location permissions in your settings.',
+            [
+              {
+                text: 'Open Settings',
+                onPress: () => openSettings(), // Open the app settings if permission is denied
+              },
+              {
+                text: 'Retry',
+                onPress: () => requestLocationPermission(), // Try again to request permission
+              },
+            ]
+          );
+        }
+      } catch (err) {
+        console.warn(err);
+      }
+    } else {
+      const permissionStatus = await check(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+      if (permissionStatus === 'granted') {
+        console.log('Location permission granted');
+        toggleUserLocation(); // Toggle the visibility
+      } else {
+        const result = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
+        if (result === 'granted') {
+          console.log('Location permission granted');
+          toggleUserLocation(); // Toggle the visibility
+        } else {
+          console.log('Location permission denied');
+          Alert.alert(
+            'Location Permission Required',
+            'This app requires access to your location. Please enable location permissions in your settings.',
+            [
+              {
+                text: 'Open Settings',
+                onPress: () => Linking.openURL('app-settings://'), // Open app settings on iOS
+              },
+              {
+                text: 'Retry',
+                onPress: () => requestLocationPermission(), // Try again to request permission
+              },
+            ]
+          );
+        }
+      }
+    }
   };
 
-  const zoomOut = () => {
-    setRegion((prevRegion) => ({
-      ...prevRegion,
-      latitudeDelta: prevRegion.latitudeDelta * 1.2, // Increase latitudeDelta to zoom out
-      longitudeDelta: prevRegion.longitudeDelta * 1.2, // Increase longitudeDelta to zoom out
-    }));
+  // Function to toggle the visibility of the user's location
+  const toggleUserLocation = () => {
+    if (!showUserLocation) {
+      // If the location is currently hidden, fetch and show it
+      getLocation();
+    }
+    setShowUserLocation(!showUserLocation); // Toggle the state
+  };
+
+  // Function to get current location using react-native-geolocation-service
+  const getLocation = () => {
+    Geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        const newRegion = {
+          latitude,
+          longitude,
+          latitudeDelta: 0.02,
+          longitudeDelta: 0.02,
+        };
+        setRegion(newRegion);
+        if (mapRef.current) {
+          mapRef.current.animateToRegion(newRegion, 500); // Smooth animation to new region
+        }
+      },
+      (error) => {
+        console.error('Error getting location:', error);
+        Alert.alert(
+          'Location Error',
+          'Unable to get your current location. Please ensure location services are enabled.',
+          [{ text: 'OK' }]
+        );
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 30000,
+        maximumAge: 10000,
+      }
+    );
   };
 
   return (
-    <View className="flex-1">
-    <MapView
-      zoomEnabled={true}
-      className="flex-1"
-      region={region}
-      onRegionChangeComplete={(newRegion) => setRegion(newRegion)} // Keep track of region changes
-    >
-      <Marker
-        coordinate={{
-          latitude: location.lat,
-          longitude: location.long,
-        }}
-        // title={`Vehicle: ${vehicleNo}`}
+    <View style={{ flex: 1 }}>
+      {/* MapView */}
+      <MapView
+        ref={mapRef}
+        style={{ flex: 1 }}
+        region={region}
+        onRegionChangeComplete={(newRegion) => setRegion(newRegion)}
+        zoomEnabled={true}
+        scrollEnabled={true}
+        pitchEnabled={false}
+        rotateEnabled={false}
+        showsUserLocation={showUserLocation} // Toggle visibility of the blue bubble
       />
-    </MapView>
-  
-    <View className="absolute right-3 top-1/3 -translate-y-1/2">
-    <TouchableOpacity className="bg-gray-300 rounded-lg p-2" onPress={zoomIn} >
-      <MaterialIcons size={25} name="zoom-in" color="black" />
-    </TouchableOpacity>
 
-    <TouchableOpacity className="bg-gray-300 rounded-lg p-2 mt-4" onPress={zoomOut}>
-      <MaterialIcons size={25} name="zoom-out" color="black"  />
-    </TouchableOpacity>
+      {/* Button to toggle current location */}
+      <View style={{ position: 'absolute', right: 15, top: '40%', transform: [{ translateY: -15 }] }}>
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#f0f0f0',
+            borderRadius: 10,
+            padding: 10,
+            alignItems: 'center',
+          }}
+          onPress={requestLocationPermission}
+        >
+          <MaterialIcons
+            size={25}
+            name={showUserLocation ? "location-off" : "location-on"} // Change icon based on state
+            color="black"
+          />
+        </TouchableOpacity>
+      </View>
 
-    <TouchableOpacity className="bg-gray-300 rounded-lg p-2 mt-4" >
-      <MaterialIcons size={25} name="location-on" color="black"  />
-    </TouchableOpacity>
-  </View> 
-  <View className="bg-white p-4 absolute bottom-5 left-3 right-3 rounded-lg shadow-lg">
-  <Text className="text-lg font-semibold text-black flex-row items-center">
-  <MaterialIcons name="access-time" color="red" size={24} className="ml-2" />
-    ARRIVAL {"    "}
-    <Text className="text-green-900">10 MIN</Text>
-  </Text>
-</View>
-
-  </View>
-  
+      {/* Bottom Info Box */}
+      <View
+        style={{
+          backgroundColor: '#fff',
+          padding: 15,
+          position: 'absolute',
+          bottom: 20,
+          left: 15,
+          right: 15,
+          borderRadius: 10,
+          shadowColor: '#000',
+          shadowOpacity: 0.2,
+          shadowRadius: 5,
+          elevation: 5,
+        }}
+      >
+        <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#000' }}>
+          <MaterialIcons name="access-time" color="red" size={24} style={{ marginRight: 5 }} />
+          ARRIVAL{"    "}
+          <Text style={{ color: '#006400' }}>10 MIN</Text>
+        </Text>
+      </View>
+    </View>
   );
 };
 
