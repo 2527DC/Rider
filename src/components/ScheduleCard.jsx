@@ -50,9 +50,10 @@ const ScheduleCard = ({ tripDetails }) => {
 
   const handleTracking=(vehicleNo)=>{
 
-    if (tripDetails.vehicleNo!=="") {
+    // if (tripDetails.vehicleNo!=="") {
+
       navigation.navigate('TrackingDriver', { vehicleNo });
-    }  
+  //   }  
   }
 
   const handleCancelBooking = (id) => {

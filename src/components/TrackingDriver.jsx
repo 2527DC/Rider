@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet, Button, TouchableOpacity } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import database from '@react-native-firebase/database';
+import  MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 const TrackingDriver = ({ route }) => {
-  const { vehicleNo } = route.params; // Receive vehicleNo as a prop
+  // const { vehicleNo } = route.params; // Receive vehicleNo as a prop
 
-  console.log(vehicleNo + " in the tracking screen ");
+  // console.log(vehicleNo + " in the tracking screen ");
 
   const [location, setLocation] = useState({
     lat: 13.1123, // Default latitude
@@ -19,28 +20,28 @@ const TrackingDriver = ({ route }) => {
     longitudeDelta: 0.01,
   });
 
-  useEffect(() => {
-    // Fetch vehicle location from Realtime Database
-    const vehicleRef = database().ref(`/Driverlocations/${vehicleNo}`);
+  // useEffect(() => {
+  //   // Fetch vehicle location from Realtime Database
+  //   const vehicleRef = database().ref(`/Driverlocations/${vehicleNo}`);
 
-    const unsubscribe = vehicleRef.on('value', (snapshot) => {
-      if (snapshot.exists()) {
-        const { lat, long } = snapshot.val();
-        setLocation({ lat, long });
-        setRegion(prevRegion => ({
-          ...prevRegion,
-          latitude: lat,
-          longitude: long,
-        }));
-        console.log('Vehicle lat and long .' + lat, long);
-      } else {
-        console.error('Vehicle not found in database.');
-      }
-    });
+  //   const unsubscribe = vehicleRef.on('value', (snapshot) => {
+  //     if (snapshot.exists()) {
+  //       const { lat, long } = snapshot.val();
+  //       setLocation({ lat, long });
+  //       setRegion(prevRegion => ({
+  //         ...prevRegion,
+  //         latitude: lat,
+  //         longitude: long,
+  //       }));
+  //       console.log('Vehicle lat and long .' + lat, long);
+  //     } else {
+  //       console.error('Vehicle not found in database.');
+  //     }
+  //   });
 
-    // Cleanup listener when component unmounts
-    return () => vehicleRef.off('value', unsubscribe);
-  }, [vehicleNo]);
+  //   // Cleanup listener when component unmounts
+  //   return () => vehicleRef.off('value', unsubscribe);
+  // }, [vehicleNo]);
 
   // Zoom in and zoom out functions
   const zoomIn = () => {
@@ -60,53 +61,46 @@ const TrackingDriver = ({ route }) => {
   };
 
   return (
-    <View style={styles.container}>
-     
-      <MapView
-        style={styles.map}
-        region={region}
-        onRegionChangeComplete={(newRegion) => setRegion(newRegion)} // Keep track of region changes
-      >
-        <Marker
-          coordinate={{
-            latitude: location.lat,
-            longitude: location.long,
-          }}
-          title={`Vehicle: ${vehicleNo}`}
-        />
-      </MapView>
+    <View className="flex-1">
+    <MapView
+      zoomEnabled={true}
+      className="flex-1"
+      region={region}
+      onRegionChangeComplete={(newRegion) => setRegion(newRegion)} // Keep track of region changes
+    >
+      <Marker
+        coordinate={{
+          latitude: location.lat,
+          longitude: location.long,
+        }}
+        // title={`Vehicle: ${vehicleNo}`}
+      />
+    </MapView>
+  
+    <View className="absolute right-3 top-1/3 -translate-y-1/2">
+    <TouchableOpacity className="bg-gray-300 rounded-lg p-2" onPress={zoomIn} >
+      <MaterialIcons size={25} name="zoom-in" color="black" />
+    </TouchableOpacity>
 
-      <View style={styles.zoomButtonsContainer}>
-        <Button title="Zoom In" onPress={zoomIn} />
-        <Button title="Zoom Out" onPress={zoomOut} />
-      </View>
-    </View>
+    <TouchableOpacity className="bg-gray-300 rounded-lg p-2 mt-4" onPress={zoomOut}>
+      <MaterialIcons size={25} name="zoom-out" color="black"  />
+    </TouchableOpacity>
+
+    <TouchableOpacity className="bg-gray-300 rounded-lg p-2 mt-4" >
+      <MaterialIcons size={25} name="location-on" color="black"  />
+    </TouchableOpacity>
+  </View> 
+  <View className="bg-white p-4 absolute bottom-5 left-3 right-3 rounded-lg shadow-lg">
+  <Text className="text-lg font-semibold text-black flex-row items-center">
+  <MaterialIcons name="access-time" color="red" size={24} className="ml-2" />
+    ARRIVAL {"    "}
+    <Text className="text-green-900">10 MIN</Text>
+  </Text>
+</View>
+
+  </View>
+  
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginVertical: 10,
-  },
-  map: {
-    flex: 1,
-  },
-  zoomButtonsContainer: {
-    position: 'absolute',
-    bottom: 20,
-    left: 20,
-    right: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-  },
-});
 
 export default TrackingDriver;
