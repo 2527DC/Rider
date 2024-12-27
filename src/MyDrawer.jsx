@@ -5,7 +5,6 @@ import { createStackNavigator } from '@react-navigation/stack'; // Import Stack 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import ProfileScreen from './screens/ProfileScreen';
 import Schedule from './screens/Schedule';
-import Reviews from './screens/Reviews';
 import Practice from './screens/Practice';
 import TripHistory from './screens/TripHistory';
 import RAC from './screens/RAC';
@@ -126,15 +125,7 @@ const MyDrawer = () => {
           ),
         }}
       />
-      <Drawer.Screen
-        name="Reviews"
-        component={Reviews}
-        options={{
-          drawerIcon: ({ color, size }) => (
-            <MaterialIcons name="rate-review" color={color} size={size} />
-          ),
-        }}
-      />
+     
       <Drawer.Screen
         name="Practice"
         component={Practice}
