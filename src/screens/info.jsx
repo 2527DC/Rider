@@ -283,7 +283,7 @@ const GetArrivalTime = () => {
   
   // Function to get arrival time from source to destination
   const getArrivalTime = async (source, destination) => {
-    const origin = `${13.0604},${77.501865}`;
+    const origin = `${source.lat},${source.lng}`;
     const dest = `${destination.lat},${destination.lng}`;
 
     try {

@@ -3,7 +3,6 @@ import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { Calendar } from "react-native-calendars";
 import ShiftList from "../components/ShiftList";
 import ScheduleCard from "../components/ScheduleCard";
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useAppContext } from "../Store/AppContext";
 import database from '@react-native-firebase/database';
 const Schedule = () => {
@@ -11,10 +10,9 @@ const Schedule = () => {
   const [selectedButton, setSelectedButton] = useState('login');
   const [showShiftList, setShowShiftList] = useState(false);
   const [showScheduleList, setShowScheduleList] = useState(true);
-  const {shifts,tripHistory, setTripHistory,shiftValue} = useAppContext()
+  const {shifts,tripHistory,shiftValue} = useAppContext()
   const today = new Date().toISOString().split("T")[0];
-  const navigation = useNavigation();
-
+ 
   const currentDate = new Date();
   const nextMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 2, 0);
   const nextMonthLastDate = nextMonth.toISOString().split("T")[0];
@@ -38,6 +36,7 @@ const Schedule = () => {
 
   const handleNextClick = () => {
     setShowShiftList(true);
+    console.log( " this are the selected dates " + Object.keys(selectedDates))
   };
 
   const handleBackClick = () => {
@@ -49,47 +48,61 @@ const Schedule = () => {
     
     setShowScheduleList(false); // Toggle the state when button is clicked
   };
-  // Handle submit action
-  const handleSubmit = async () => {
-    if (selectedButton && Object.keys(selectedDates).length > 0) {
-      try {
-        // Generate a unique ID for the booking
-        // const bookingId = `B${tripHistory.length + 1}`; // Example logic for unique ID generation
-        const bookingId = `B${tripHistory.length + 1}`;
-        console.log(bookingId);
-        
+// Handle submit action
+const handleSubmit = async () => {
+  if (selectedButton && Object.keys(selectedDates).length > 0) {
+    try {
+      // Iterate over all selected dates
+      const selectedDateKeys = Object.keys(selectedDates); // Get all the selected dates
+
+      // Create a booking for each selected date
+      for (let i = 0; i < selectedDateKeys.length; i++) {
+        const date = selectedDateKeys[i]; // Current date in the loop
+        const bookingId = `B${tripHistory.length + i + 1}`; // Unique ID for each booking
+
+        console.log(`Booking ID for ${date}:`, bookingId);
+
         const newBooking = {
-          id:bookingId,
-          date: Object.keys(selectedDates)[0], // Use the first selected date
-          type: selectedButton,
-          otp: "",
-          driverName: "",
-          vehicleNo: "",
-          startLocation: "Chennai",
-          endLocation: "Hyderabad",
-          shift: shiftValue, // Default shift if not selected
-          status: "Scheduled",
+          id: bookingId,
+          date: date, // Use the current date in the loop
+          type: selectedButton, // Login or Logout (based on selected button)
+          otp: "", // You can add OTP logic here if needed
+          driverName: "", // Placeholder, you can populate this field as required
+          vehicleNo: "", // Placeholder, you can populate this field as required
+          startLocation: "Chennai", // Customize based on your requirement
+          endLocation: "Hyderabad", // Customize based on your requirement
+          shift: shiftValue, // The selected shift (if available)
+          status: "Scheduled", // Booking status
         };
-  
-        // Update Firebase
-        const bookingRef = database().ref(`/schedules/EMPLOYEE_001/bookings/id`);
-        const snapshot = await bookingRef.once('value');
-        const existingBookings = snapshot.val() || {};
-        existingBookings[bookingId] = newBooking;
-        await bookingRef.set(existingBookings);
-  
-        console.log("Booking added to Firebase:", newBooking);
-  
-        // Update local state
-        setShowScheduleList(true);
-        setShowShiftList(false);
-      } catch (error) {
-        console.error("Error creating booking:", error);
+
+        // Update Firebase for this booking
+        const bookingRef = database().ref(`/schedules/EMPLOYEE_001/bookings/id/${bookingId}`);
+        
+        // Wait for the Firebase update to complete before moving to the next iteration
+        await bookingRef.set(newBooking)
+          .then(() => {
+            console.log(`Booking added to Firebase for ${bookingId}:`, newBooking);
+          })
+          .catch((error) => {
+            console.error(`Error updating booking ${bookingId} in Firebase:`, error);
+          });
       }
-    } else {
-      console.warn("Please select a button and a date before submitting.");
+
+      // Clear selected dates after submission
+      setSelectedDates({});  // Reset selectedDates to an empty object
+
+      // Update local state to reflect the changes
+      setShowScheduleList(true);
+      setShowShiftList(false);
+
+    } catch (error) {
+      console.error("Error creating booking:", error);
     }
-  };
+  } else {
+    console.warn("Please select a button and at least one date before submitting.");
+  }
+};
+
   
   const handleShiftSelect = (shift) => {
     setSelectedShift(shift);

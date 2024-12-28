@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Platform, Alert, Linking } from 'react-native';
+import { View, Text, TouchableOpacity, Platform, Alert, Linking, Button } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import { request, PERMISSIONS, check, openSettings } from 'react-native-permissions';
@@ -8,7 +8,68 @@ import database from '@react-native-firebase/database';  // Import Firebase Real
 import API_ENDPOINTS from '../constant/Constants';
 import axios from 'axios';
 
-const TrackingDriver = () => {
+const TrackingDriver = ({ route }) => {
+  const [lat, setLatitude] = useState(17.0944444); // Initial latitude
+  const [long, setLongitude] = useState(77.5016665); // Initial longitude
+  const [isRunning, setIsRunning] = useState(false);
+  const [intervalId, setIntervalId] = useState(null); // To manage the interval
+
+// Function to start location updates
+const startUpdates = () => {
+  if (!isRunning) {
+    setIsRunning(true);
+
+    // Start interval to update latitude and longitude
+    const id = setInterval(() => {
+      setLatitude((prevLat) => prevLat + 0.0001); // Increment latitude
+      setLongitude((prevLng) => prevLng + 0.0001); // Increment longitude
+
+      // Update Firebase with new latitude and longitude
+      database()
+        .ref(`/Driverlocations/${vehicleNo}`) // Replace with your Firebase path
+        .set({ lat, long})
+        .then(() => console.log("Location updated in Firebase"))
+        .catch((error) => console.error("Error updating location:", error));
+    }, 100); // Update every second
+
+    setIntervalId(id);
+  }
+};
+
+ // Function to stop location updates
+ const stopUpdates = () => {
+  if (isRunning) {
+    setIsRunning(false);
+
+    // Clear the interval
+    clearInterval(intervalId);
+    setIntervalId(null);
+
+    console.log("Stopped location updates");
+  }
+};
+
+// Toggle function
+const toggleUpdates = () => {
+  if (isRunning) {
+    stopUpdates();
+  } else {
+    startUpdates();
+  }
+};
+useEffect(() => {
+  // Cleanup interval when component unmounts
+  return () => {
+    if (intervalId) {
+      clearInterval(intervalId);
+    }
+  };
+}, [intervalId]);
+
+  const { vehicleNo } = route.params; // Access the params object
+
+  console.log(vehicleNo + " this is the vehicle number");
+  
   const [region, setRegion] = useState({
     latitude: 20.5937,
     longitude: 78.9629,
@@ -25,8 +86,8 @@ const TrackingDriver = () => {
   const [locationEnabled, setLocationEnabled] = useState(true);  // Toggle for location visibility
 
   useEffect(() => {
-    const userId = 'KA-02-9282';
-    const locationRef = database().ref(`/Driverlocations/${userId}`);
+    // const userId = 'KA-02-9282';
+    const locationRef = database().ref(`/Driverlocations/${vehicleNo}`);
   
     const onValueChange = locationRef.on('value', snapshot => {
       if (snapshot.exists()) {
@@ -44,8 +105,8 @@ const TrackingDriver = () => {
         const newRegion = {
           latitude: locationData.lat,
           longitude: locationData.long,
-          latitudeDelta: 0.050,
-          longitudeDelta: 0.050,
+          latitudeDelta: 0.080,
+          longitudeDelta: 0.080,
         };
         setRegion(newRegion);
   
@@ -244,6 +305,10 @@ const TrackingDriver = () => {
             color="black"
           />
         </TouchableOpacity>
+        <Button
+        title={isRunning ? "Stop Updates" : "Start Updates"}
+        onPress={toggleUpdates}
+      />
       </View>
 
       {/* Bottom Info Box */}

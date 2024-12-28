@@ -8,6 +8,7 @@ import { useAppContext } from "../Store/AppContext";
 import ShiftList from "./ShiftList";
 import database from "@react-native-firebase/database";
 import { useNavigation } from "@react-navigation/native";
+import Toast from "react-native-toast-message";
 
 // Edit Component
 const EditComponent = ({ setEdit, shifts, selectedButton, onConfirm }) => (
@@ -41,6 +42,8 @@ const EditComponent = ({ setEdit, shifts, selectedButton, onConfirm }) => (
 );
 
 const ScheduleCard = ({ tripDetails }) => {
+
+  
   const { shifts, shiftValue } = useAppContext();
   const [expanded, setExpanded] = useState(false);
   const [editClicked, setEdit] = useState(false);
@@ -48,14 +51,19 @@ const ScheduleCard = ({ tripDetails }) => {
   const navigation = useNavigation();
   const toggleCard = () => setExpanded(!expanded);
 
-  const handleTracking=(vehicleNo)=>{
-
-    // if (tripDetails.vehicleNo!=="") {
-
+  const handleTracking = (vehicleNo) => {
+    if (tripDetails.vehicleNo !== "") {
       navigation.navigate('TrackingDriver', { vehicleNo });
-  //   }  
-  }
-
+    } else {
+      console.log('Showing toast');
+      Toast.show({
+        type: 'info',
+       
+        text1: 'Driver not assigned yet',
+      });
+    }
+  };
+  
   const handleCancelBooking = (id) => {
 
     const path = `/schedules/EMPLOYEE_001/bookings/id/${id}`;
@@ -89,10 +97,11 @@ const ScheduleCard = ({ tripDetails }) => {
 
   return (
     <View className="m-2 mt-5 relative">
+     
       <Text className="absolute top-[-20px] left-1 text-xs font-bold text-green-600 bg-green-100 px-2 py-1 rounded">
         {tripDetails.date}
       </Text>
-
+     
       {editClicked ? (
         <EditComponent
           setEdit={setEdit}
@@ -206,6 +215,7 @@ const ScheduleCard = ({ tripDetails }) => {
           )}
         </View>
       )}
+       <Toast/>
     </View>
   );
 };
