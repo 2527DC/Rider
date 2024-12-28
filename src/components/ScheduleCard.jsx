@@ -42,8 +42,6 @@ const EditComponent = ({ setEdit, shifts, selectedButton, onConfirm }) => (
 );
 
 const ScheduleCard = ({ tripDetails }) => {
-
-  
   const { shifts, shiftValue } = useAppContext();
   const [expanded, setExpanded] = useState(false);
   const [editClicked, setEdit] = useState(false);
@@ -52,18 +50,21 @@ const ScheduleCard = ({ tripDetails }) => {
   const toggleCard = () => setExpanded(!expanded);
 
   const handleTracking = (vehicleNo) => {
-    if (tripDetails.vehicleNo !== "") {
+    if (vehicleNo !== "") {
+      // Navigate to the TrackingDriver screen with the vehicle number
       navigation.navigate('TrackingDriver', { vehicleNo });
     } else {
-      console.log('Showing toast');
+      // Show a toast message if no vehicle is assigned
       Toast.show({
-        type: 'info',
-       
-        text1: 'Driver not assigned yet',
+        type: 'error',
+        position: 'bottom',
+        text1: 'No Driver Assigned',
+        text2: 'This trip does not have an assigned driver.',
+        visibilityTime: 3000,
+        autoHide: true,
       });
     }
   };
-  
   const handleCancelBooking = (id) => {
 
     const path = `/schedules/EMPLOYEE_001/bookings/id/${id}`;
@@ -97,11 +98,10 @@ const ScheduleCard = ({ tripDetails }) => {
 
   return (
     <View className="m-2 mt-5 relative">
-     
       <Text className="absolute top-[-20px] left-1 text-xs font-bold text-green-600 bg-green-100 px-2 py-1 rounded">
         {tripDetails.date}
       </Text>
-     
+
       {editClicked ? (
         <EditComponent
           setEdit={setEdit}
@@ -215,7 +215,7 @@ const ScheduleCard = ({ tripDetails }) => {
           )}
         </View>
       )}
-       <Toast/>
+       <Toast ref={(ref) => Toast.setRef(ref)} />
     </View>
   );
 };

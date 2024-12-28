@@ -1,11 +1,14 @@
 import React from 'react';
 import GoogleMapScreen from './GoogleMapScreen';
+import { View } from 'react-native';
 
 
 const RAC = () => {
   
   return (
-    <GoogleMapScreen></GoogleMapScreen>
+   <View>
+
+   </View>
   );
 };
 
