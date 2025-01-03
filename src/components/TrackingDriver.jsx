@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Platform, Alert, Linking, Button } from 'react-native';
+import { View, Text, TouchableOpacity, Platform, Alert, Linking, Button, Image } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import { request, PERMISSIONS, check, openSettings } from 'react-native-permissions';
@@ -7,6 +7,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import database from '@react-native-firebase/database';  // Import Firebase Realtime Database
 import API_ENDPOINTS from '../constant/Constants';
 import axios from 'axios';
+import SoSbutton from './SoSbutton';
 
 const TrackingDriver = ({ route }) => {
   const [lat, setLatitude] = useState(17.0944444); // Initial latitude
@@ -260,7 +261,10 @@ useEffect(() => {
     });
   };
   
-
+ const handleSoSbutton =()=>{
+  console.log("  sos button presseed ");
+  
+ }
   return (
     <View style={{ flex: 1 }}>
       {/* MapView */}
@@ -282,6 +286,10 @@ useEffect(() => {
           description="This is where the driver is currently located"
         />
       </MapView>
+      {/*  SOS button Implemented  */}
+      <View className='absolute right-4 top-12  '> 
+<SoSbutton onPress={handleSoSbutton}/>
+      </View>
 
       {/* Button to toggle current location */}
       <View style={{ position: 'absolute', right: 15, top: '40%', transform: [{ translateY: -15 }] }}>
@@ -313,27 +321,58 @@ useEffect(() => {
 
       {/* Bottom Info Box */}
       <View
-        style={{
-          backgroundColor: '#fff',
-          padding: 15,
-          position: 'absolute',
-          bottom: 20,
-          left: 15,
-          right: 15,
-          borderRadius: 10,
-          shadowColor: '#000',
-          shadowOpacity: 0.2,
-          shadowRadius: 5,
-          elevation: 5,
-        }}
+      className='bottom-5 p-3 bg-white rounded-lg'
       >
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View  className=" justify-seperately"style={{ flexDirection: 'row', alignItems: 'center' }}>
           <MaterialIcons name="access-time" color="red" size={24} style={{ marginRight: 5 }} />
           <Text style={{ fontSize: 16, fontWeight: 'bold', color: '#000' }}>
-            ARRIVAL <Text style={{ color: '#006400' }}>{arrivalTime}</Text>
+            ARRIVAL <Text style={{ color: '#006400' }}>10:30s</Text>
+          </Text>
+          <View className='flex-row ml-7 p-2 mb-1'>
+    <Text className='text-black font-semibold'>OTP </Text>
+    <Text className='text-green-800 font-bold'>9987</Text>
+  </View>
+        </View>
+        
+        <View className="py-3 px-1 flex-row justify-between">
+      {/* User Info Section */}
+      <View className=" bg-white flex-1 mr-2">
+        {/* Row with Image and Name */}
+        <View className="flex flex-row items-center ">
+          {/* User Image */}
+          <Image
+            source={{ uri: 'https://via.placeholder.com/150' }} // Internet Image URL
+            className="w-16 h-16 rounded-full"
+          />
+       
+          <Text className="text-black text-lg font-bold  px-1">
+          KA-04-AA-2198
           </Text>
         </View>
+       
+      
+       <Text className="mt-1    text-black text-base font-semibold"     numberOfLines={1}
+            ellipsizeMode="tail">
+         chethan
+        </Text>
+     
+       
       </View>
+
+      {/* Call Button Section */}
+      <View className="p-3">
+        <TouchableOpacity className="p-2 flex-row bg-blue-200 items-center px-3 rounded-lg">
+          <MaterialIcons name="call" color="red" size={24} style={{ marginRight: 5 }} />
+          <Text className="text-lg text-blue-500 font-semibold">Call</Text>
+        </TouchableOpacity>
+      </View>
+    
+    
+        </View>
+        
+      </View>
+      
+
     </View>
   );
 };
