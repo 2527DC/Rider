@@ -53,8 +53,6 @@ const ScheduleCard = ({ tripDetails }) => {
     if (vehicleNo !== "") {
       // Navigate to the TrackingDriver screen with the vehicle number
       navigation.navigate('TrackingDriver', { vehicleNo });
-      console.log(vehicleNo +  " this  is the vehical nio ");
-      
     } else {
       // Show a toast message if no vehicle is assigned
       Toast.show({
@@ -171,13 +169,11 @@ const ScheduleCard = ({ tripDetails }) => {
 
                 {tripDetails.vehicleNo !== "" && (
                   <View className="flex-1 items-center">
-                   
+                    <Text className="text-lg font-bold text-purple-600 px-2 rounded mt-1">
+                      {tripDetails.driverName}
+                    </Text>
                     <Text className="text-lg font-bold text-purple-600 px-2 py-1 rounded mt-1">
                       {tripDetails.vehicleNo}
-                    </Text>
-                    
-                    <Text className="text-md font-bold text-purple-600 px-2 rounded mt-1">
-                   Planned Pick Up: {"20:35"}
                     </Text>
                   </View>
                 )}
@@ -193,44 +189,33 @@ const ScheduleCard = ({ tripDetails }) => {
                 >
                   <Text className="text-lg font-bold text-red-500">X</Text>
                 </TouchableOpacity>
-                {tripDetails.status !== "cancelled" && (
-        <>
-        { tripDetails.status==="vehicle allocated"?"":<TouchableOpacity
-            className="bg-gray-200 px-2 py-1 rounded"
-            onPress={() => {
-              setEdit(true);
-              setId(tripDetails.id);
-            }}
-          >
-            <Text className="text-lg font-bold text-purple-600">Edit</Text>
-          </TouchableOpacity>
-}
-         
-          {tripDetails.otp !== "" && (
-            <Text className="text-lg font-bold text-purple-600 px-2 py-1 rounded">
-              Otp: {tripDetails.otp}
-            </Text>
-          )}
-
-          <TouchableOpacity
-            className="bg-gray-200 px-2 py-1 rounded"
-            onPress={() => {
-              handleTracking(tripDetails.vehicleNo);
-            }}
-          >
-            <Text className="text-lg font-bold text-purple-600">
-              Track{" "}
-              <TrackIcon name="location-arrow" size={13} color="#900" />
-            </Text>
-          </TouchableOpacity>
-        </>
-      )}
+                <TouchableOpacity
+                  className="bg-gray-200 px-2 py-1 rounded"
+                  onPress={() => {
+                    setEdit(true);
+                    setId(tripDetails.id);
+                  }}
+                >
+                  <Text className="text-lg font-bold text-purple-600">Edit</Text>
+                </TouchableOpacity>
+                {tripDetails.otp !== "" && (
+                  <Text className="text-lg font-bold text-purple-600 px-2 py-1 rounded">
+                    Otp: {tripDetails.otp}
+                  </Text>
+                )}
+                <TouchableOpacity className="bg-gray-200 px-2 py-1 rounded" 
+                onPress={()=>{handleTracking(tripDetails.vehicleNo)}}>
+                  <Text className="text-lg font-bold text-purple-600">
+                    Track{" "}
+                    <TrackIcon name="location-arrow" size={13} color="#900" />
+                  </Text>
+                </TouchableOpacity>
               </View>
             </View>
           )}
         </View>
       )}
-       <Toast />
+       <Toast ref={(ref) => Toast.setRef(ref)} />
     </View>
   );
 };

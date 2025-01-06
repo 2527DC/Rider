@@ -7,8 +7,8 @@ import ProfileScreen from './screens/ProfileScreen';
 import Schedule from './screens/Schedule';
 import Practice from './screens/Practice';
 import TripHistory from './screens/TripHistory';
+import RAC from './screens/RAC';
 import TrackingDriver from './components/TrackingDriver';
-import NOtification from './screens/NOtification';
 
 
 const Drawer = createDrawerNavigator();
@@ -48,29 +48,16 @@ const CustomDrawerContent = (props) => {
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>
       <DrawerContentScrollView {...props}>
-      <View
-      style={{
-        backgroundColor: '#3b82f6',
-        padding: 20,
-        flexDirection: 'row', // Set items in a row
-        alignItems: 'center', // Vertically align items
-        justifyContent: 'space-between', // Space out elements
-        borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
-        marginBottom: 10,
-      }}
-    >
-      <View>
-        <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'white' }}>John Doe</Text>
-        <Text style={{ fontSize: 14, color: '#f0f0f0' }}>johndoe@example.com</Text>
-      </View>
-      <TouchableOpacity onPress={() => props.navigation.navigate('Profile')}>
-  <MaterialIcons name="chevron-right" size={35} color="white" />
-</TouchableOpacity>
-
-    </View>
+        <View style={{ backgroundColor: '#3b82f6', padding: 20, alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#ccc', marginBottom: 10 }}>
+          <Image
+            source={require('./assets/image/images.jpg')}
+            style={{ width: 80, height: 80, borderRadius: 40, marginBottom: 10 }}
+          />
+          <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'white' }}>John Doe</Text>
+          <Text style={{ fontSize: 14, color: '#f0f0f0' }}>johndoe@example.com</Text>
+        </View>
         <DrawerItemList {...props} />
-        <View style={{ marginTop: 20, paddingHorizontal:30 }}>
+        <View style={{ marginTop: 20, paddingHorizontal: 30 }}>
           <TouchableOpacity
             style={{
               backgroundColor: '#f44336',
@@ -120,7 +107,15 @@ const MyDrawer = () => {
         },
       }}
     >
-      
+      <Drawer.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          drawerIcon: ({ color, size }) => (
+            <MaterialIcons name="person" color={color} size={size} />
+          ),
+        }}
+      />
       <Drawer.Screen
         name="Schedule"
         component={Schedule}
@@ -150,11 +145,11 @@ const MyDrawer = () => {
         }}
       />
       <Drawer.Screen
-        name="Notification"
-        component={NOtification}
+        name="RAC"
+        component={RAC}
         options={{
           drawerIcon: ({ color, size }) => (
-            <MaterialIcons name="notifications" color={color} size={size} />
+            <MaterialIcons name="directions-car-filled" color={color} size={size} />
           ),
         }}
       />
@@ -165,9 +160,10 @@ const MyDrawer = () => {
 const MyStack = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Menu" component={MyDrawer} options={{ headerShown: false }} />
+
+      <Stack.Screen name="MyDrawer" component={MyDrawer} options={{ headerShown: false }} />
+
       <Stack.Screen name="TrackingDriver"      component={TrackingDriver} />
-      <Stack.Screen name="Profile"      component={ProfileScreen} />
     </Stack.Navigator>
   );
 };
