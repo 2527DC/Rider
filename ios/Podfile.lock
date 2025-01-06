@@ -1672,6 +1672,27 @@ PODS:
     - React-logger (= 0.76.3)
     - React-perflogger (= 0.76.3)
     - React-utils (= 0.76.3)
+  - RNCAsyncStorage (1.24.0):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.01.01.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - RNFBApp (21.6.1):
     - Firebase/CoreOnly (= 11.5.0)
     - React-Core
@@ -1994,6 +2015,7 @@ DEPENDENCIES:
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCodegen (from `build/generated/ios`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBDatabase (from `../node_modules/@react-native-firebase/database`)"
   - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
@@ -2157,6 +2179,8 @@ EXTERNAL SOURCES:
     :path: build/generated/ios
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNCAsyncStorage:
+    :path: "../node_modules/@react-native-async-storage/async-storage"
   RNFBApp:
     :path: "../node_modules/@react-native-firebase/app"
   RNFBDatabase:
@@ -2259,6 +2283,7 @@ SPEC CHECKSUMS:
   React-utils: 30e298e60c060da933c17e32baba6b05bdd5df78
   ReactCodegen: 11ba5753ff8fd0eade9f701a238b6bfbcfcc241d
   ReactCommon: cef332bed205215d2a0270e12e1feb337974ccfe
+  RNCAsyncStorage: ed97da7a45c1af0c6a938c8b66da1ec24792fcab
   RNFBApp: a3c9c3b23aa2d77001ce62b5a997325927593c12
   RNFBDatabase: abb0d91778ea1ee81d62d0a2a03fa13f0dbbb1c6
   RNFBMessaging: dd213f66f36b249f9ab035efe24dc2a3ede8f8c5

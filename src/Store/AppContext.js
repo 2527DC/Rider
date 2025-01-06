@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import database from '@react-native-firebase/database'; // Import Firebase Realtime Database
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // Create Context
 const AppContext = createContext();
 
@@ -11,17 +11,6 @@ export const useAppContext = () => {
 
 // Create a provider component
 export const AppProvider = ({ children }) => {
-  // State to store user data
-  const [userData, setUserData] = useState({
-    api_token: '',
-    emailid: '',
-    user_name: '',
-    phone: '',
-    phone_code: '',
-    gender: '',
-    address: '',
-    user_id: '',
-  });
 
   const [shifts, setShifts] = useState([]);
   const [tripHistory, setTripHistory] = useState([]); // Trip history state
@@ -83,61 +72,66 @@ export const AppProvider = ({ children }) => {
     };
   }, []);
 
-  // Method to update specific user data field
-  const updateUserData = (key, value) => {
-    console.log(`Updating user data: ${key} = ${value}`);
-    setUserData(prev => {
-      const updatedData = {
-        ...prev,
-        [key]: value, // Update only the specified key
-      };
-      console.log('Updated user data:', updatedData);
-      return updatedData;
-    });
-  };
-
-  // Method to set all user data at once
-  const setAllUserData = data => {
-    console.log('Setting all user data:', data);
-    setUserData(data);
-  };
-
-  // Method to get a specific field value from user data
-  const getUserData = key => {
-    const value = userData[key] || null; // Return the value or null if not found
-    console.log(`Getting user data for key "${key}":`, value);
-    return value;
-  };
-
+ 
   // Method to clear user data
-  const clearUserData = () => {
-    console.log('Clearing user data...');
-    setUserData({
-      api_token: '',
-      emailid: '',
-      user_name: '',
-      phone: '',
-      phone_code: '',
-      gender: '',
-      address: '',
-      user_id: '',
-    });
+ 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      try {
+        const status = await AsyncStorage.getItem('isLoggedIn');
+        // Default to 'false' if the value doesn't exist or is not 'true'
+        if (status === 'true') {
+          setIsLoggedIn(true);
+        } else {
+          setIsLoggedIn(false);
+        }
+      } catch (error) {
+        console.error('Error checking login status:', error);
+        setIsLoggedIn(false); // Default to false on error
+      }
+    };
+
+    checkLoginStatus();
+  }, []);
+
+  const login = async () => {
+    try {
+      setIsLoggedIn(true);
+      await AsyncStorage.setItem('isLoggedIn', 'true');
+      // Additional logic after login (e.g., navigating to a new screen)
+    } catch (error) {
+      console.error('Error logging in:', error);
+    }
+  };
+
+  const logout = async () => {
+   
+    try {
+      // Remove user data from AsyncStorage
+      await AsyncStorage.removeItem('userData');
+      console.log('User data removed from AsyncStorage');
+      await AsyncStorage.setItem('isLoggedIn', 'false');
+      setIsLoggedIn(false);
+  
+    } catch (error) {
+      console.error('Error removing user data from AsyncStorage:', error);
+    }
   };
 
   return (
     <AppContext.Provider
       value={{
-        userData,
-        updateUserData,
-        setAllUserData,
-        getUserData,
-        clearUserData,
+  
         shifts,
         setShifts,
         tripHistory,
         setTripHistory,
         setShiftvalue,
-        shiftValue
+        shiftValue,
+        logout,
+        login,isLoggedIn,
       }}
     >
       {children}

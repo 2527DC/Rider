@@ -2,11 +2,11 @@ import axios from 'axios';
 
 // Create an instance of axios
 const axiosClient = axios.create({
-  baseURL: 'https://gitets.mltcorporate.com/api/', // Replace with your base API URL
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization':`Bearer LHc9vmSgeXAiX3GWwXXD9ehJnmWcEaOILD2GT5qt9INQzj9JWM8GOLLH0ozf`
-  },
+  baseURL: 'https://fleet.mltcorporate.com/api/', // Replace with your base API URL
+  // headers: {
+  //   'Content-Type': 'application/json',
+  //   'Authorization':`Bearer LHc9vmSgeXAiX3GWwXXD9ehJnmWcEaOILD2GT5qt9INQzj9JWM8GOLLH0ozf`
+  // },
 });
 
 // Optional: Set up request and response interceptors for logging, error handling, etc.

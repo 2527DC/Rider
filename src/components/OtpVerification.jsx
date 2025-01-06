@@ -1,13 +1,16 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useRef, useState } from 'react';
-import { View, TextInput, Text, Alert, TouchableOpacity } from 'react-native';
-
-const OtpVerification = ({navigation}) => {
-
-
+import { View, TextInput, Text, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
+import axiosClient from '../Store/API_CLIENT';
+import API_ENDPOINTS from '../constant/Constants';
+import { useAppContext } from '../Store/AppContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+const OtpVerification = ({ navigation, route }) => {
   const [otp, setOtp] = useState(['', '', '', '']); // State for OTP input (4 boxes)
+  const [isLoading, setIsLoading] = useState(false); // State for loading
   const inputRefs = useRef([]); // Array to hold refs for the input boxes
 
+    const {login}=useAppContext()
   const handleChange = (text, index) => {
     if (text.length <= 1) {
       const newOtp = [...otp];
@@ -30,24 +33,60 @@ const OtpVerification = ({navigation}) => {
     }
   };
 
-  const handleSubmit = () => {
-    navigation.replace("Main");
+  const handleSubmit = async () => {
+    const enteredOtp = otp.join(''); // Join the OTP array into a string
+    if (enteredOtp.length < 4) {
+      Alert.alert('Error', 'Please enter all 4 digits of the OTP');
+      return;
+    }
+  
+    setIsLoading(true); // Start loading
+    const { phoneNumber } = route.params;
+    const request = {
+      mobile_number: phoneNumber,
+      otp: enteredOtp,
+      fcm_id: 'khbsjhbjhsx',
+    };
+  
+    try {
+      const response = await axiosClient.post(API_ENDPOINTS.OTP_VERIFY, request);
+  
+      if (response.data.success) {
+        const userData = response.data.data.userinfo;
 
-      /* 1. Navigate to the Details route with params */
-    
+        // Prepare only required data for storage and context
+        const filteredUserData = {
+            api_token: userData.api_token,
+            emailid: userData.emailid,
+            user_name: userData.user_name,
+            phone: userData.mobno,
+            gender: userData.gender,
+            address: '', 
+            user_id: userData.user_id
+        };
 
-    // const enteredOtp = otp.join(''); // Join the OTP array into a string
-    // if (enteredOtp.length < 4) {
-    //   Alert.alert('Error', 'Please enter all 4 digits of the OTP');
-    //   return;
-    // }
-    // console.log('Entered OTP:', enteredOtp);
-    // // Alert.alert('OTP Submitted', `Your OTP: ${enteredOtp}`);
-   
-    // // Clear the fields
-    // setOtp(['', '', '', '']);
-    // inputRefs.current[0]?.focus(); // Focus on the first input after clearing
+        await AsyncStorage.setItem('userData',JSON.stringify(filteredUserData))
+        // Call login from context to set the login status
+       login();
+
+      } else {
+        Alert.alert('Error', 'Invalid OTP');
+      }
+  
+      // Log the response data
+      console.log('Response data:', response.data);
+    } catch (error) {
+      console.error('Something went wrong: ' + error);
+      Alert.alert('Error', 'Something went wrong. Please try again.');
+    } finally {
+      setIsLoading(false); // Stop loading after response
+    }
+  
+    // Clear the fields and focus on the first input after submission
+    setOtp(['', '', '', '']);
+    inputRefs.current[0]?.focus();
   };
+  
 
   return (
     <View className="flex-1 justify-center items-center px-5">
@@ -65,6 +104,7 @@ const OtpVerification = ({navigation}) => {
             onKeyPress={(e) => handleKeyPress(e, index)}
             textAlign="center"
             autoFocus={index === 0} // Focus on the first input by default
+            editable={!isLoading} // Disable input fields when loading
           />
         ))}
       </View>
@@ -72,11 +112,14 @@ const OtpVerification = ({navigation}) => {
         We have sent the verification code to your email
       </Text>
 
-      <TouchableOpacity
-        onPress={handleSubmit}
-        className="bg-blue-500 py-2 px-6 rounded-lg">
-        <Text className="text-white text-lg">Submit</Text>
-      </TouchableOpacity>
+      {/* Show loading spinner while processing */}
+      {isLoading ? (
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : (
+        <TouchableOpacity onPress={handleSubmit} className="bg-blue-500 py-2 px-6 rounded-lg">
+          <Text className="text-white text-lg">Submit</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
