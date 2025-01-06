@@ -161,7 +161,7 @@ const MyStack = () => {
   return (
     <Stack.Navigator>
 
-      <Stack.Screen name="MyDrawer" component={MyDrawer} options={{ headerShown: false }} />
+      <Stack.Screen name="MENU" component={MyDrawer} options={{ headerShown: false }} />
 
       <Stack.Screen name="TrackingDriver"      component={TrackingDriver} />
     </Stack.Navigator>
