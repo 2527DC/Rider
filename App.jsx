@@ -10,30 +10,36 @@ import LoginOption from './src/screens/LoginOption';
 import EmailLoginScreen from './src/screens/EmailLoginScreen';
 import OtpVerification from './src/components/OtpVerification';
 import PhoneLogin from './src/screens/PhoneLogin';
+import SplashScreen from 'react-native-splash-screen';
 
 const Stack = createNativeStackNavigator();
 
 function App() {
   const { isLoggedIn } = useAppContext();
+
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
+
   return (
     <SafeAreaProvider>
       
         <NavigationContainer>
         <Stack.Navigator>
-            {isLoggedIn ? (
+            {/* {isLoggedIn ? ( */}
               <Stack.Screen
                 name="Main"
                 component={MyDrawer}
                 options={{ headerShown: false }}
               />
-            ) : (
+            {/* ) : ( */}
               <>
                 <Stack.Screen name="Login" component={LoginOption}     options={{ headerShown: false }}/>
                 <Stack.Screen name="EmailLogin" component={EmailLoginScreen}    options={{ headerShown: false }}/>
                 <Stack.Screen name="otp" component={OtpVerification}   options={{ headerShown: false }} />
                 <Stack.Screen name="PhoneLogin" component={PhoneLogin}    options={{ headerShown: false }}/>
               </>
-            )}
+            {/* )} */}
           </Stack.Navigator>
         </NavigationContainer>
     

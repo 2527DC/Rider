@@ -4,8 +4,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="android:editTextBackground">@layout/launch_screen</item>
-        <!-- <color name="splash_background"></color> Green color -->
-
+        
     </style>
 
 </resources>
