@@ -17,9 +17,9 @@ const Stack = createNativeStackNavigator();
 function App() {
   const { isLoggedIn } = useAppContext();
 
-  useEffect(() => {
-    SplashScreen.hide();
-  }, []);
+    useEffect(() => {
+        SplashScreen.hide();
+    }, []);
 
   return (
     <SafeAreaProvider>
@@ -39,7 +39,7 @@ function App() {
                 <Stack.Screen name="otp" component={OtpVerification}   options={{ headerShown: false }} />
                 <Stack.Screen name="PhoneLogin" component={PhoneLogin}    options={{ headerShown: false }}/>
               </>
-            {/* )} */}
+           {/* )}  */}
           </Stack.Navigator>
         </NavigationContainer>
     
