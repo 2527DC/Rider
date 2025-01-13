@@ -11,6 +11,7 @@ import EmailLoginScreen from './src/screens/EmailLoginScreen';
 import OtpVerification from './src/components/OtpVerification';
 import PhoneLogin from './src/screens/PhoneLogin';
 import SplashScreen from 'react-native-splash-screen';
+import Toast from 'react-native-toast-message';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,21 +27,22 @@ function App() {
       
         <NavigationContainer>
         <Stack.Navigator>
-            {/* {isLoggedIn ? ( */}
+            {isLoggedIn ? (
               <Stack.Screen
                 name="Main"
                 component={MyDrawer}
                 options={{ headerShown: false }}
               />
-            {/* ) : ( */}
+            ) : (
               <>
                 <Stack.Screen name="Login" component={LoginOption}     options={{ headerShown: false }}/>
                 <Stack.Screen name="EmailLogin" component={EmailLoginScreen}    options={{ headerShown: false }}/>
                 <Stack.Screen name="otp" component={OtpVerification}   options={{ headerShown: false }} />
                 <Stack.Screen name="PhoneLogin" component={PhoneLogin}    options={{ headerShown: false }}/>
               </>
-           {/* )}  */}
+           )} 
           </Stack.Navigator>
+          <Toast />
         </NavigationContainer>
     
     </SafeAreaProvider>

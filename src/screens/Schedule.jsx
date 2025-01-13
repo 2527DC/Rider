@@ -5,6 +5,7 @@ import ShiftList from "../components/ShiftList";
 import ScheduleCard from "../components/ScheduleCard";
 import { useAppContext } from "../Store/AppContext";
 import database from '@react-native-firebase/database';
+import Toast from "react-native-toast-message";
 const Schedule = () => {
   const [selectedDates, setSelectedDates] = useState({});
   const [selectedButton, setSelectedButton] = useState('login');
@@ -108,15 +109,25 @@ const handleSubmit = async () => {
     setSelectedShift(shift);
   };
 
+
+  // Function to show toast
+  const showToast = (type, text1, text2) => {
+    setToastConfig({ type, text1, text2 });
+  };
   return (
     <View className="flex-1 bg-white">
       {showScheduleList ? (
         <View className="flex-1 bg-gray-100">
           <ScrollView contentContainerStyle={{ paddingBottom: 80 }} className="p-2">
             {tripHistory.map((trip,index) => (
-              <ScheduleCard key={index} tripDetails={trip} />
+              <ScheduleCard key={index} tripDetails={trip}
+              showToast={showToast} // Pass the function down to ScheduleCard
+               />
+
             ))}
           </ScrollView>
+        
+
           <TouchableOpacity
             className="absolute bottom-7 m-2 right-5 w-12 h-12 rounded-full bg-blue-500 justify-center items-center shadow-lg"
             onPress={handleAddSchedule}

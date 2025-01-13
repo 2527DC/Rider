@@ -46,6 +46,7 @@ const OtpVerification = ({ navigation, route }) => {
       mobile_number: phoneNumber,
       otp: enteredOtp,
       fcm_id: 'khbsjhbjhsx',
+      device_token: 'khbsjhbjhsx',
     };
   
     try {
@@ -63,6 +64,7 @@ const OtpVerification = ({ navigation, route }) => {
             gender: userData.gender,
             address: '', 
             user_id: userData.user_id
+          
         };
 
         await AsyncStorage.setItem('userData',JSON.stringify(filteredUserData))

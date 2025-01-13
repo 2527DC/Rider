@@ -1,8 +1,8 @@
 const API_ENDPOINTS = {
   REGISTER: '/user-registration',
   LOGIN: 'send-otp',
-OTP_VERIFY:'verify-otp',
-
+  OTP_VERIFY:'verify-otp',
+SHIFTS :"active-slots",
   BOOK_NOW: '/book-now',
   BOOKING_HISTORY: '/ride-history',
   CANCEL_BOOKING: '/cancel-booking',
