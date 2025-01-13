@@ -120,10 +120,7 @@ const handleSubmit = async () => {
         <View className="flex-1 bg-gray-100">
           <ScrollView contentContainerStyle={{ paddingBottom: 80 }} className="p-2">
             {tripHistory.map((trip,index) => (
-              <ScheduleCard key={index} tripDetails={trip}
-              showToast={showToast} // Pass the function down to ScheduleCard
-               />
-
+              <ScheduleCard key={index} tripDetails={trip} />
             ))}
           </ScrollView>
         
